@@ -1,6 +1,7 @@
 """
 Database operations.
 """
+import os
 import sqlite3
 
 DB_NAME = "snippy.db"
@@ -12,8 +13,11 @@ EXAMPLE_TITLE = "Prints hello world"
 EXAMPLE_CODE = "def hello_world():\n    print \"Hello, world!\""
 
 
-def initialize_database(verbose=False):
-    connection = sqlite3.connect(DB_NAME)
+def init_db(verbose=False):
+    if os.path.isfile(DB_NAME):
+        return
+
+    connection = get_connection()
 
     cursor = connection.cursor()
     create_command = ("CREATE TABLE %s (creation_date DATETIME, type TEXT, "
@@ -22,39 +26,29 @@ def initialize_database(verbose=False):
         print create_command
     cursor.execute(create_command)
 
-    insert_snippet(cursor, EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE,
-                   EXAMPLE_CODE, verbose)
+    insert(connection, EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE, EXAMPLE_CODE,
+           verbose)
 
     connection.commit()
     connection.close()
 
 
-def insert_snippet(cursor, snippet_type, snippet_lang, snippet_title,
-                   snippet_code, verbose=False):
+def get_connection():
+    return sqlite3.connect(DB_NAME)
+
+
+def get_all_rows(connection):
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM %s" % TABLE_NAME)
+    return cursor.fetchall()
+
+
+def insert_row(connection, snippet_type, snippet_lang, snippet_title,
+               snippet_code, verbose=False):
+    cursor = connection.cursor()
     command = ("INSERT INTO %s VALUES (DATETIME(), '%s', '%s', '%s', '%s')"
                % (TABLE_NAME, snippet_type, snippet_lang, snippet_title,
                   snippet_code))
     if verbose:
         print command
     cursor.execute(command)
-
-
-def print_table_rows():
-    """For debugging only"""
-    connection = sqlite3.connect(DB_NAME)
-
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM %s" % TABLE_NAME)
-    rows = cursor.fetchall()
-    for row in rows:
-        print row
-
-    connection.close()
-
-
-if __name__ == '__main__':
-    import os
-
-    os.remove("snippy.db")
-    initialize_database(True)
-    print_table_rows()
