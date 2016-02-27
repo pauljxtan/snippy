@@ -1,18 +1,31 @@
 import Tkinter as tk
 import ttk
+import database as db
 
 
-class SnippyGui(object):
-    def __init__(self, master):
-        self.frame = ttk.Frame(master)
-        self.frame.pack(expand=True)
+class SnippyGui(ttk.Frame):
+    def __init__(self, parent, db_conn):
+        ttk.Frame.__init__(self, parent)
+        self.parent = parent
+        self.conn = db_conn
 
-        self.frame_main = ttk.Frame(self.frame)
-        self.frame_main.pack(expand=True)
+        self.tree = ttk.Treeview(self.parent)
+        self.make_tree()
 
-        self.tree = ttk.Treeview(self.frame)
-        self.tree.insert("", 0, text='test')
-        self.tree.pack()
+    def make_tree(self):
+        self.tree.pack(fill='both', expand=True)
+        self.tree['columns'] = ('creation_date', 'type', 'lang', 'title')
+        self.tree.heading('creation_date', text="Creation date")
+        self.tree.heading('type', text="Snippet type")
+        self.tree.heading('lang', text="Language")
+        self.tree.heading('title', text="Title")
+
+        self.load_data()
+
+    def load_data(self):
+        rows = db.get_all_rows(self.conn)
+        for i, row in enumerate(rows):
+            self.tree.insert("", i, text="", values=row)
 
 
 def center(win):
@@ -29,10 +42,13 @@ def center(win):
 
 
 def main():
+    db.init_db(True)
+    db_conn = db.get_connection()
+
     root = tk.Tk()
-    root.geometry('640x480')
+    # root.geometry('640x480')
     root.title("Snippy")
-    snippy_gui = SnippyGui(root)
+    SnippyGui(root, db_conn).pack()
     root.mainloop()
 
 
