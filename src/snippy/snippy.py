@@ -1,6 +1,8 @@
 import Tkinter as tk
 import ttk
 import database as db
+
+
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db_conn):
         ttk.Frame.__init__(self, parent)
@@ -11,6 +13,9 @@ class SnippyGui(ttk.Frame):
         self.make_tree()
 
     def make_tree(self):
+        """
+        Builds the data tree.
+        """
         self.tree.pack(fill='both', expand=True)
         self.tree['columns'] = ('creation_date', 'type', 'lang', 'title')
         self.tree.heading('creation_date', text="Creation date")
@@ -21,6 +26,9 @@ class SnippyGui(ttk.Frame):
         self.load_data()
 
     def load_data(self):
+        """
+        Inserts data into the tree.
+        """
         rows = db.get_all_rows(self.conn)
         for i, row in enumerate(rows):
             self.tree.insert("", i, text="", values=row)
