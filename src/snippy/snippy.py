@@ -2,6 +2,9 @@ import Tkinter as tk
 import ttk
 import database as db
 
+DB_FILENAME = "snippy.db"
+TABLE_NAME = "snippy"
+
 
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db_conn):
@@ -29,7 +32,7 @@ class SnippyGui(ttk.Frame):
         """
         Inserts data into the tree.
         """
-        rows = db.get_all_rows(self.conn)
+        rows = db.get_all_rows(self.conn, TABLE_NAME)
         for i, row in enumerate(rows):
             self.tree.insert("", i, text="", values=row)
 
@@ -48,8 +51,8 @@ def center(win):
 
 
 def main():
-    db.init_db(True)
-    db_conn = db.get_connection()
+    db.init_db(DB_FILENAME, TABLE_NAME, True)
+    db_conn = db.get_connection(DB_FILENAME)
 
     root = tk.Tk()
     # root.geometry('640x480')
