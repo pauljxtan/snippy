@@ -26,8 +26,8 @@ def init_db(verbose=False):
         print create_command
     cursor.execute(create_command)
 
-    insert(connection, EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE, EXAMPLE_CODE,
-           verbose)
+    insert_row(connection, EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE,
+               EXAMPLE_CODE, verbose)
 
     connection.commit()
     connection.close()
