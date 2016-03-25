@@ -1,8 +1,6 @@
 import Tkinter as tk
 import ttk
 import database as db
-
-
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db_conn):
         ttk.Frame.__init__(self, parent)
