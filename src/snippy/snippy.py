@@ -12,29 +12,42 @@ class SnippyGui(ttk.Frame):
         self.parent = parent
         self.conn = db_conn
 
-        self.tree = ttk.Treeview(self.parent)
-        self.make_tree()
+        self.tree = self.make_tree()
+        self.tree.pack(fill=tk.BOTH, expand=True)
+
+        self.notebook = ttk.Notebook(self.parent)
+        test_frame = ttk.Frame()
+        test_text = tk.Text(test_frame)
+        test_text.insert(tk.END, "FRAME TEXT")
+        test_text.config(state=tk.DISABLED)
+        test_text.pack()
+        self.notebook.add(test_frame, text="TAB TEXT")
+        self.notebook.pack(fill=tk.BOTH, expand=True)
 
     def make_tree(self):
         """
         Builds the data tree.
         """
-        self.tree.pack(fill='both', expand=True)
-        self.tree['columns'] = ('creation_date', 'type', 'lang', 'title')
-        self.tree.heading('creation_date', text="Creation date")
-        self.tree.heading('type', text="Snippet type")
-        self.tree.heading('lang', text="Language")
-        self.tree.heading('title', text="Title")
+        tree = ttk.Treeview(self.parent)
+        tree['columns'] = ('creation_date', 'type', 'lang', 'title')
+        tree.heading('creation_date', text="Creation date")
+        tree.heading('type', text="Snippet type")
+        tree.heading('lang', text="Language")
+        tree.heading('title', text="Title")
 
-        self.load_data()
+        tree = self.init_data(tree)
 
-    def load_data(self):
+        return tree
+
+    def init_data(self, tree):
         """
-        Inserts data into the tree.
+        Inserts all existing data into the tree.
         """
         rows = db.get_all_rows(self.conn, TABLE_NAME)
         for i, row in enumerate(rows):
-            self.tree.insert("", i, text="", values=row)
+            tree.insert("", i, text="", values=row)
+
+        return tree
 
 
 def center(win):
