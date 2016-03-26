@@ -49,3 +49,8 @@ def insert_row(connection, table_name, snippet_type, snippet_lang,
     if verbose:
         print command
     cursor.execute(command)
+
+
+def get_row(connection, table_name, snippet_type, snippet_lang, snippet_title,
+            snippet_code, verbose=False):
+    return
