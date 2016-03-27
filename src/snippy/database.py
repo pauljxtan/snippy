@@ -36,12 +36,16 @@ CREATE TABLE %s (
 
 
 def get_connection(db_filename):
-    return sqlite3.connect(db_filename)
+    connection = sqlite3.connect(db_filename)
+    #connection.row_factory = sqlite3.Row
+
+    return connection
 
 
 def get_all_rows(connection, table_name):
     rows = connection.execute("SELECT * FROM %s" % table_name)
-    return rows
+
+    return rows.fetchall()
 
 
 def insert_row(connection, table_name, snippet_type, snippet_lang,
@@ -61,4 +65,19 @@ def get_row(connection, table_name, row_id, verbose=False):
         print command
     row = connection.execute(command)
 
-    return row
+    return row.fetchone()
+
+
+def get_unique_elem(connection, table_name, row_id, column, verbose=False):
+    #connection.row_factory = sqlite3.Row
+    #row = get_row(connection, table_name, row_id, verbose)
+    #connection.row_factory = None
+    #return row[column]
+    command = ("SELECT %s FROM %s WHERE ROWID=%s"
+               % (column, table_name, row_id))
+
+    if verbose:
+        print command
+    elem = connection.execute(command)
+
+    return elem.fetchone()[0]
