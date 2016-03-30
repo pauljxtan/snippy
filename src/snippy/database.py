@@ -17,8 +17,7 @@ TABLE_SCHEMA = """(
     language TEXT,
     title TEXT,
     code TEXT
-)
-"""
+)"""
 
 
 class SnippyDB:
@@ -78,3 +77,6 @@ class SnippyDB:
         if self.verbose:
             print command
         self._conn.execute(command)
+
+    def __del__(self):
+        self._conn.close()
