@@ -1,6 +1,6 @@
 import Tkinter as tk
 import ttk
-from database import SnippyDB
+from database import SnippyDB, TABLE_COLUMNS, TABLE_TITLES
 
 DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
@@ -13,51 +13,55 @@ class SnippyGui(ttk.Frame):
         self._db = db
         self.verbose = verbose
 
-        self.tree = self.make_tree()
-        self.tree.pack(fill=tk.BOTH, expand=True)
+        self.data_box = DataBox(self)
+        self._init_data()
+        self.data_box.pack(fill=tk.BOTH, expand=True)
 
-        self.notebook, self.code_text_frame, self.code_text \
-            = self.make_notebook()
-        self.display_code_in_notebook(1)
+        self._notebook, self._code_text_frame, self._code_text \
+            = self._make_notebook()
+        self._display_code_in_notebook(1)
 
-    def make_tree(self):
+    def _init_data(self):
         """
-        Builds the data tree.
-        """
-        tree = ttk.Treeview(self._parent)
-        tree['columns'] = ('creation_date', 'type', 'lang', 'title')
-        tree.heading('creation_date', text="Creation date")
-        tree.heading('type', text="Snippet type")
-        tree.heading('lang', text="Language")
-        tree.heading('title', text="Title")
-
-        return self.init_data(tree)
-
-    def init_data(self, tree):
-        """
-        Inserts all existing data into the tree.
+        Initialize the data box with existing data.
         """
         rows = self._db.get_all_rows()
         for i, row in enumerate(rows):
-            tree.insert("", i, text="", values=row)
+            print row
+            self.data_box.insert_row(row)
 
-        return tree
-
-    def make_notebook(self):
+    def _make_notebook(self):
         notebook = ttk.Notebook(self._parent)
         code_text_frame = ttk.Frame()
         code_text = tk.Text(code_text_frame)
-        code_text.config(state=tk.DISABLED)
+        # code_text.config(state=tk.DISABLED)
         code_text.pack()
         notebook.add(code_text_frame, text="TAB TEXT")
         notebook.pack(fill=tk.BOTH, expand=True)
 
         return notebook, code_text_frame, code_text
 
-    def display_code_in_notebook(self, row_id):
+    def _display_code_in_notebook(self, row_id):
         code = self._db.get_unique_elem(row_id, 'code')
-        self.code_text.insert(tk.END, "TEST")
-        self.code_text.insert(tk.END, code)
+        self._code_text.insert(tk.END, code)
+
+
+class DataBox(ttk.Frame):
+    def __init__(self, parent):
+        ttk.Frame.__init__(self, parent)
+        self._parent = parent
+        self._tree = None
+        self._make_tree()
+
+    def _make_tree(self):
+        self.tree = ttk.Treeview(columns=TABLE_COLUMNS)
+        for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
+            self.tree.heading(column, text=title)
+        # TODO: scrollbars?
+        self.tree.pack(fill=tk.BOTH, expand=True)
+
+    def insert_row(self, row):
+        self.tree.insert("", tk.END, text=row[-1], values=row[:-1])
 
 
 def center(win):
@@ -78,8 +82,10 @@ def main():
 
     root = tk.Tk()
     # root.geometry('640x480')
+    # center(root)
     root.title("Snippy")
     SnippyGui(root, db, verbose=True)
+    center(root)
     root.mainloop()
 
 
