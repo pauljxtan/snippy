@@ -4,10 +4,12 @@ Database operations.
 import os
 import sqlite3
 
-EXAMPLE_TYPE = "Function"
-EXAMPLE_LANG = "Python"
-EXAMPLE_TITLE = "Prints hello world"
-EXAMPLE_CODE = "def hello_world():\n    print \"Hello, world!\""
+EXAMPLE_SNIPPET = {
+    'type':  "Function",
+    'lang':  "Python",
+    'title': "Prints hello world",
+    'code':  "def hello_world():\n    print \"Hello, world!\""
+}
 
 TABLE_SCHEMA = """(
     creation_date DATETIME,
@@ -39,8 +41,8 @@ class SnippyDB:
         if verbose:
             print command
         self._conn.execute(command)
-        self.insert_row(EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE,
-                        EXAMPLE_CODE)
+        self.insert_row(EXAMPLE_SNIPPET['type'], EXAMPLE_SNIPPET['lang'],
+                        EXAMPLE_SNIPPET['title'], EXAMPLE_SNIPPET['code'])
 
     def get_all_rows(self):
         command = "SELECT * FROM %s" % self._table_name
