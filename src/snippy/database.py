@@ -9,13 +9,13 @@ EXAMPLE_LANG = "Python"
 EXAMPLE_TITLE = "Prints hello world"
 EXAMPLE_CODE = "def hello_world():\n    print \"Hello, world!\""
 
-COMMAND_CREATE_TABLE = """
-CREATE TABLE %s (
+TABLE_SCHEMA = """(
     creation_date DATETIME,
     type TEXT,
     language TEXT,
     title TEXT,
-    code TEXT)
+    code TEXT
+)
 """
 
 
@@ -35,9 +35,10 @@ class SnippyDB:
         self._conn = sqlite3.connect(db_filename)
 
         # Initialize the table with some example data
+        command = "CREATE TABLE %s %s" % (self._table_name, TABLE_SCHEMA)
         if verbose:
-            print COMMAND_CREATE_TABLE
-        self._conn.execute(COMMAND_CREATE_TABLE)
+            print command
+        self._conn.execute(command)
         self.insert_row(EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE,
                         EXAMPLE_CODE)
 
@@ -46,6 +47,7 @@ class SnippyDB:
         if self.verbose:
             print command
         rows = self._conn.execute(command)
+
         return rows.fetchall()
 
     def get_row(self, row_id):
@@ -54,6 +56,7 @@ class SnippyDB:
         if self.verbose:
             print command
         row = self._conn.execute(command)
+
         return row.fetchone()
 
     def get_unique_elem(self, row_id, column):
@@ -62,6 +65,7 @@ class SnippyDB:
         if self.verbose:
             print command
         elem = self._conn.execute(command)
+
         return elem.fetchone()[0]
 
     def insert_row(self, snippet_type, snippet_lang, snippet_title,
