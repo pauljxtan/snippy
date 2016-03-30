@@ -13,48 +13,38 @@ class SnippyGui(ttk.Frame):
         self._db = db
         self.verbose = verbose
 
-        self.data_box = DataBox(self)
+        self._data_box = DataBox(self)
         self._init_data()
-        self.data_box.pack(fill=tk.BOTH, expand=True)
+        self._data_box.pack(fill=tk.BOTH, expand=True)
 
-        self._notebook, self._code_text_frame, self._code_text \
-            = self._make_notebook()
-        self._display_code_in_notebook(1)
+        self._notebook = ttk.Notebook(self)
+        self._notebook.pack(fill=tk.BOTH, expand=True)
+
+        # TESTING ONLY
+        code = self._db.get_unique_elem(1, 'code')
+        self._add_notebook_page(1, code)
 
     def _init_data(self):
         """
         Initialize the data box with existing data.
         """
         rows = self._db.get_all_rows()
-        for i, row in enumerate(rows):
-            print row
-            self.data_box.insert_row(row)
+        for _, row in enumerate(rows):
+            self._data_box.insert_row(row)
 
-    def _make_notebook(self):
-        notebook = ttk.Notebook(self._parent)
-        code_text_frame = ttk.Frame()
-        code_text = tk.Text(code_text_frame)
-        # code_text.config(state=tk.DISABLED)
-        code_text.pack()
-        notebook.add(code_text_frame, text="TAB TEXT")
-        notebook.pack(fill=tk.BOTH, expand=True)
-
-        return notebook, code_text_frame, code_text
-
-    def _display_code_in_notebook(self, row_id):
-        code = self._db.get_unique_elem(row_id, 'code')
-        self._code_text.insert(tk.END, code)
+    def _add_notebook_page(self, tab_text, text):
+        page = ttk.Frame(self._notebook)
+        page_text = tk.Text(page)
+        page_text.insert(tk.END, text)
+        page_text.pack(fill=tk.BOTH, expand=True)
+        self._notebook.add(page, text=tab_text)
 
 
 class DataBox(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent)
         self._parent = parent
-        self._tree = None
-        self._make_tree()
-
-    def _make_tree(self):
-        self.tree = ttk.Treeview(columns=TABLE_COLUMNS)
+        self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
         for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
             self.tree.heading(column, text=title)
         # TODO: scrollbars?
@@ -84,8 +74,8 @@ def main():
     # root.geometry('640x480')
     # center(root)
     root.title("Snippy")
-    SnippyGui(root, db, verbose=True)
-    center(root)
+    snippy_gui = SnippyGui(root, db, verbose=True)
+    snippy_gui.pack(fill=tk.BOTH, expand=True)
     root.mainloop()
 
 
