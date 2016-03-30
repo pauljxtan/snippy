@@ -9,75 +9,66 @@ EXAMPLE_LANG = "Python"
 EXAMPLE_TITLE = "Prints hello world"
 EXAMPLE_CODE = "def hello_world():\n    print \"Hello, world!\""
 
-
-def init_db(db_filename, table_name, verbose=False):
-    if os.path.isfile(db_filename):
-        return
-
-    connection = get_connection(db_filename)
-
-    create_command = ("""
+COMMAND_CREATE_TABLE = """
 CREATE TABLE %s (
     creation_date DATETIME,
     type TEXT,
     language TEXT,
     title TEXT,
     code TEXT)
-""" % table_name)
-    if verbose:
-        print create_command
-    connection.execute(create_command)
-
-    insert_row(connection, table_name, EXAMPLE_TYPE, EXAMPLE_LANG,
-               EXAMPLE_TITLE, EXAMPLE_CODE, verbose)
-
-    connection.commit()
-    connection.close()
+"""
 
 
-def get_connection(db_filename):
-    connection = sqlite3.connect(db_filename)
-    #connection.row_factory = sqlite3.Row
+class SnippyDB:
+    def __init__(self, db_filename, table_name, clobber=False, verbose=False):
+        if os.path.isfile(db_filename):
+            if not clobber:
+                raise ValueError("Database file %s already exists"
+                                 % db_filename)
+            if verbose:
+                print "Overwriting %s" % db_filename
+                os.remove(db_filename)
 
-    return connection
+        self._db_filename = db_filename
+        self._table_name = table_name
+        self.verbose = verbose
+        self._conn = sqlite3.connect(db_filename)
 
+        # Initialize the table with some example data
+        if verbose:
+            print COMMAND_CREATE_TABLE
+        self._conn.execute(COMMAND_CREATE_TABLE)
+        self.insert_row(EXAMPLE_TYPE, EXAMPLE_LANG, EXAMPLE_TITLE,
+                        EXAMPLE_CODE)
 
-def get_all_rows(connection, table_name):
-    rows = connection.execute("SELECT * FROM %s" % table_name)
+    def get_all_rows(self):
+        command = "SELECT * FROM %s" % self._table_name
+        if self.verbose:
+            print command
+        rows = self._conn.execute(command)
+        return rows.fetchall()
 
-    return rows.fetchall()
+    def get_row(self, row_id):
+        command = ("SELECT * FROM %s WHERE ROWID=%s"
+                   % (self._table_name, row_id))
+        if self.verbose:
+            print command
+        row = self._conn.execute(command)
+        return row.fetchone()
 
+    def get_unique_elem(self, row_id, column):
+        command = ("SELECT %s FROM %s WHERE ROWID=%s"
+                   % (column, self._table_name, row_id))
+        if self.verbose:
+            print command
+        elem = self._conn.execute(command)
+        return elem.fetchone()[0]
 
-def insert_row(connection, table_name, snippet_type, snippet_lang,
-               snippet_title, snippet_code, verbose=False):
-    command = ("INSERT INTO %s VALUES (DATETIME(), '%s', '%s', '%s', '%s')"
-               % (table_name, snippet_type, snippet_lang, snippet_title,
-                  snippet_code))
-    if verbose:
-        print command
-    connection.execute(command)
-
-
-def get_row(connection, table_name, row_id, verbose=False):
-    command = ("SELECT * FROM %s WHERE ROWID=%s" % (table_name, row_id))
-
-    if verbose:
-        print command
-    row = connection.execute(command)
-
-    return row.fetchone()
-
-
-def get_unique_elem(connection, table_name, row_id, column, verbose=False):
-    #connection.row_factory = sqlite3.Row
-    #row = get_row(connection, table_name, row_id, verbose)
-    #connection.row_factory = None
-    #return row[column]
-    command = ("SELECT %s FROM %s WHERE ROWID=%s"
-               % (column, table_name, row_id))
-
-    if verbose:
-        print command
-    elem = connection.execute(command)
-
-    return elem.fetchone()[0]
+    def insert_row(self, snippet_type, snippet_lang, snippet_title,
+                   snippet_code):
+        command = ("INSERT INTO %s VALUES (DATETIME(), '%s', '%s', '%s', '%s')"
+                   % (self._table_name, snippet_type, snippet_lang,
+                      snippet_title, snippet_code))
+        if self.verbose:
+            print command
+        self._conn.execute(command)
