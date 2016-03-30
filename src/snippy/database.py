@@ -19,6 +19,9 @@ TABLE_SCHEMA = """(
     code TEXT
 )"""
 
+TABLE_COLUMNS = ('creation_date', 'type', 'lang', 'title')
+TABLE_TITLES = ('Creation date', 'Snippet Type', 'Language', 'Title')
+
 
 class SnippyDB:
     def __init__(self, db_filename, table_name, clobber=False, verbose=False):
@@ -44,7 +47,7 @@ class SnippyDB:
                         EXAMPLE_SNIPPET['title'], EXAMPLE_SNIPPET['code'])
 
     def get_all_rows(self):
-        command = "SELECT * FROM %s" % self._table_name
+        command = "SELECT *, ROWID FROM %s" % self._table_name
         if self.verbose:
             print command
         rows = self._conn.execute(command)
@@ -52,7 +55,7 @@ class SnippyDB:
         return rows.fetchall()
 
     def get_row(self, row_id):
-        command = ("SELECT * FROM %s WHERE ROWID=%s"
+        command = ("SELECT *, ROWID FROM %s WHERE ROWID=%s"
                    % (self._table_name, row_id))
         if self.verbose:
             print command
