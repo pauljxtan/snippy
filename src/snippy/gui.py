@@ -1,6 +1,6 @@
 import Tkinter as tk
 import ttk
-from database import SnippyDB, TABLE_COLUMNS, TABLE_TITLES
+from snippy.database import SnippyDB, TABLE_COLUMNS, TABLE_TITLES
 
 DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
