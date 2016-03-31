@@ -21,8 +21,9 @@ class SnippyGui(ttk.Frame):
         self._notebook.pack(fill=tk.BOTH, expand=True)
 
         # TESTING ONLY
+        title = self._db.get_unique_elem(1, 'title')
         code = self._db.get_unique_elem(1, 'code')
-        self._add_notebook_page(1, code)
+        self._add_notebook_page(title, code)
 
     def _init_data(self):
         """
