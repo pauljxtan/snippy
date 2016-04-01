@@ -13,32 +13,49 @@ class SnippyGui(ttk.Frame):
         self._db = db
         self.verbose = verbose
 
-        self._data_box = DataBox(self)
-        self._init_data()
-        self._data_box.pack(fill=tk.BOTH, expand=True)
+        self._databox = self.make_databox()
+        self._databox.pack(fill=tk.BOTH, expand=True)
 
         self._notebook = ttk.Notebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
 
+        self._context_menu = self.make_context_menu()
+
         # TESTING ONLY
         title = self._db.get_unique_elem(1, 'title')
         code = self._db.get_unique_elem(1, 'code')
-        self._add_notebook_page(title, code)
+        self._add_notebook_page(self._notebook, title, code)
 
-    def _init_data(self):
+    def make_databox(self):
         """
-        Initialize the data box with existing data.
+        Initialize a data box with existing data.
         """
+        databox = DataBox(self)
         rows = self._db.get_all_rows()
         for _, row in enumerate(rows):
-            self._data_box.insert_row(row)
+            databox.insert_row(row)
+        return databox
 
-    def _add_notebook_page(self, tab_text, text):
+    def _add_notebook_page(self, notebook, tab_text, text):
         page = ttk.Frame(self._notebook)
         page_text = tk.Text(page)
         page_text.insert(tk.END, text)
         page_text.pack(fill=tk.BOTH, expand=True)
-        self._notebook.add(page, text=tab_text)
+        notebook.add(page, text=tab_text)
+
+    def make_context_menu(self):
+        menu = tk.Menu(self)
+        menu.add_command(label="Create")
+        menu.add_command(label="Edit")
+        menu.add_command(label="Delete")
+        return menu
+
+    def show_context_menu(self, event):
+        iid = self._databox.tree.identify_row(event.y)
+        if iid:
+            print "Showing context menu for row %s" % iid
+            # self._databox.tree.selection_set(iid)
+            self._context_menu.post(event.x_root, event.y_root)
 
 
 class DataBox(ttk.Frame):
@@ -50,9 +67,12 @@ class DataBox(ttk.Frame):
             self.tree.heading(column, text=title)
         # TODO: scrollbars?
         self.tree.pack(fill=tk.BOTH, expand=True)
+        self.tree.bind('<Button-3>', parent.show_context_menu)
 
     def insert_row(self, row):
-        self.tree.insert("", tk.END, text=row[-1], values=row[:-1])
+        values = row[:-1]
+        iid = row[-1]
+        self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
 
 
 def center(win):
