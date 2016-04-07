@@ -13,20 +13,20 @@ class SnippyGui(ttk.Frame):
         self._db = db
         self.verbose = verbose
 
-        self._databox = self.make_databox()
+        self._databox = self._make_databox()
         self._databox.pack(fill=tk.BOTH, expand=True)
 
         self._notebook = ttk.Notebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
 
-        self._context_menu = self.make_context_menu()
+        self._context_menu = self._make_context_menu()
 
         # TESTING ONLY
         title = self._db.get_unique_elem(1, 'title')
         code = self._db.get_unique_elem(1, 'code')
-        self._add_notebook_page(self._notebook, title, code)
+        self._add_notebook_page(title, code)
 
-    def make_databox(self):
+    def _make_databox(self):
         """
         Initialize a data box with existing data.
         """
@@ -36,26 +36,43 @@ class SnippyGui(ttk.Frame):
             databox.insert_row(row)
         return databox
 
-    def _add_notebook_page(self, notebook, tab_text, text):
+    def _add_notebook_page(self, tab_text, text=""):
         page = ttk.Frame(self._notebook)
         page_text = tk.Text(page)
         page_text.insert(tk.END, text)
         page_text.pack(fill=tk.BOTH, expand=True)
-        notebook.add(page, text=tab_text)
+        self._notebook.add(page, text=tab_text)
 
-    def make_context_menu(self):
+    def _make_context_menu(self):
         menu = tk.Menu(self)
-        menu.add_command(label="Create")
+        menu.add_command(label="Create", command=self._show_create_form)
         menu.add_command(label="Edit")
         menu.add_command(label="Delete")
         return menu
 
-    def show_context_menu(self, event):
+    def _show_context_menu(self, event):
         iid = self._databox.tree.identify_row(event.y)
         if iid:
             print "Showing context menu for row %s" % iid
             # self._databox.tree.selection_set(iid)
             self._context_menu.post(event.x_root, event.y_root)
+
+    def _show_create_form(self):
+        form = self._make_create_form()
+        self._notebook.add(form, text="Create snippet")
+        self._notebook.select(form)
+
+    def _make_create_form(self):
+        form = ttk.Frame(self._notebook)
+        ttk.Label(form, text="Title").grid(row=0, column=0)
+        ttk.Entry(form).grid(row=0, column=1)
+        ttk.Label(form, text="Type").grid(row=1, column=0)
+        ttk.Entry(form).grid(row=1, column=1)
+        ttk.Label(form, text="Language").grid(row=2, column=0)
+        ttk.Entry(form).grid(row=2, column=1)
+        ttk.Label(form, text="Description").grid(row=3, column=0)
+        ttk.Entry(form).grid(row=3, column=1)
+        return form
 
 
 class DataBox(ttk.Frame):
@@ -67,7 +84,7 @@ class DataBox(ttk.Frame):
             self.tree.heading(column, text=title)
         # TODO: scrollbars?
         self.tree.pack(fill=tk.BOTH, expand=True)
-        self.tree.bind('<Button-3>', parent.show_context_menu)
+        self.tree.bind('<Button-3>', parent._show_context_menu)
 
     def insert_row(self, row):
         values = row[:-1]
