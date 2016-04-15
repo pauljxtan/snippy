@@ -1,6 +1,7 @@
 import Tkinter as tk
 import ttk
-from snippy.database import SnippyDB, TABLE_COLUMNS, TABLE_TITLES
+from snippy.database import SnippyDB
+from snippy.widgets import DataBox
 
 DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
@@ -73,23 +74,6 @@ class SnippyGui(ttk.Frame):
         ttk.Label(form, text="Description").grid(row=3, column=0)
         ttk.Entry(form).grid(row=3, column=1)
         return form
-
-
-class DataBox(ttk.Frame):
-    def __init__(self, parent):
-        ttk.Frame.__init__(self, parent)
-        self._parent = parent
-        self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
-        for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
-            self.tree.heading(column, text=title)
-        # TODO: scrollbars?
-        self.tree.pack(fill=tk.BOTH, expand=True)
-        self.tree.bind('<Button-3>', parent._show_context_menu)
-
-    def insert_row(self, row):
-        values = row[:-1]
-        iid = row[-1]
-        self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
 
 
 def center(win):
