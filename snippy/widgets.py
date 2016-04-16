@@ -65,3 +65,6 @@ class DataBox(ttk.Frame):
         values = row[:-1]
         iid = row[-1]
         self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
+
+    def clear_all_rows(self):
+        self.tree.delete(*self.tree.get_children())
