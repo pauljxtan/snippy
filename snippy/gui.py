@@ -2,10 +2,12 @@ import Tkinter as tk
 import ttk
 from snippy.database import SnippyDB
 from snippy.widgets import DataBox
+from snippy.core import FormAndVars
 
 DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
 
+# TODO: Factor out each widget into separate class (pass in db connection)
 
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db, verbose=False):
@@ -14,8 +16,9 @@ class SnippyGui(ttk.Frame):
         self._db = db
         self.verbose = verbose
 
-        self._databox = self._make_databox()
+        self._databox = DataBox(self)
         self._databox.pack(fill=tk.BOTH, expand=True)
+        self._update_databox()
 
         self._notebook = ttk.Notebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
@@ -26,6 +29,12 @@ class SnippyGui(ttk.Frame):
         title = self._db.get_unique_elem(1, 'title')
         code = self._db.get_unique_elem(1, 'code')
         self._add_notebook_page(title, code)
+
+    def _update_databox(self):
+        self._databox.clear_all_rows()
+        rows = self._db.get_all_rows()
+        for _, row in enumerate(rows):
+            self._databox.insert_row(row)
 
     def _make_databox(self):
         """
@@ -64,15 +73,37 @@ class SnippyGui(ttk.Frame):
         self._notebook.select(form)
 
     def _make_create_form(self):
-        form = ttk.Frame(self._notebook)
-        ttk.Label(form, text="Title").grid(row=0, column=0)
-        ttk.Entry(form).grid(row=0, column=1)
+        ttype = tk.StringVar()
+        lang = tk.StringVar()
+        title = tk.StringVar()
+
+        form = ttk.Frame()
+
+        ttk.Label(form, text="Create snippet").grid(row=0, columnspan=2)
+
         ttk.Label(form, text="Type").grid(row=1, column=0)
-        ttk.Entry(form).grid(row=1, column=1)
         ttk.Label(form, text="Language").grid(row=2, column=0)
-        ttk.Entry(form).grid(row=2, column=1)
-        ttk.Label(form, text="Description").grid(row=3, column=0)
-        ttk.Entry(form).grid(row=3, column=1)
+        ttk.Label(form, text="Title").grid(row=3, column=0)
+        ttk.Label(form, text="Code").grid(row=4, column=0)
+
+        entry_type = ttk.Entry(form)
+        entry_lang = ttk.Entry(form)
+        entry_title = ttk.Entry(form)
+        entry_code = ttk.Entry(form)
+
+        entry_type.grid(row=1, column=1)
+        entry_lang.grid(row=2, column=1)
+        entry_title.grid(row=3, column=1)
+        entry_code.grid(row=4, column=1)
+
+        def create_snippet():
+           self._db.insert_row(entry_type.get(), entry_lang.get(),
+                               entry_title.get(), entry_code.get())
+           self._update_databox()
+
+        ttk.Button(form, text="Create", command=create_snippet).grid(
+            row=5, columnspan=2)
+
         return form
 
 
