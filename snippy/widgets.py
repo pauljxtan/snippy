@@ -4,6 +4,24 @@ import Tkinter as tk
 import ttk
 from snippy.database import TABLE_TITLES, TABLE_COLUMNS
 
+class DataBox(ttk.Frame):
+    def __init__(self, parent):
+        ttk.Frame.__init__(self, parent)
+        self._parent = parent
+        self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
+        for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
+            self.tree.heading(column, text=title)
+        # TODO: scrollbars?
+        self.tree.pack(fill=tk.BOTH, expand=True)
+        self.tree.bind('<Button-3>', parent._show_context_menu)
+
+    def insert_row(self, row):
+        values = row[:-1]
+        iid = row[-1]
+        self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
+
+    def clear_all_rows(self):
+        self.tree.delete(*self.tree.get_children())
 
 class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
     """
@@ -16,7 +34,7 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         """
         ttk.Frame.__init__(self, parent)
         self._notebook = ttk.Notebook(self, **kw)
-        self._notebook.pack()
+        self._notebook.pack(fill=tk.BOTH, expand=True)
 
         self._index_right_clicked = None
 
@@ -49,22 +67,5 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         self._notebook.forget(self._index_right_clicked)
         self._index_right_clicked = None
 
-
-class DataBox(ttk.Frame):
-    def __init__(self, parent):
-        ttk.Frame.__init__(self, parent)
-        self._parent = parent
-        self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
-        for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
-            self.tree.heading(column, text=title)
-        # TODO: scrollbars?
-        self.tree.pack(fill=tk.BOTH, expand=True)
-        self.tree.bind('<Button-3>', parent._show_context_menu)
-
-    def insert_row(self, row):
-        values = row[:-1]
-        iid = row[-1]
-        self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
-
-    def clear_all_rows(self):
-        self.tree.delete(*self.tree.get_children())
+    def select(self, tab_id):
+        self._notebook.select(tab_id)
