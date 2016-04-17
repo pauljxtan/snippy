@@ -23,6 +23,9 @@
   <ItemGroup>
     <Compile Include="snippy\database.py" />
     <Compile Include="snippy\gui.py" />
+    <Compile Include="snippy\utils.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="snippy\widgets.py" />
     <Compile Include="snippy\__init__.py" />
   </ItemGroup>
