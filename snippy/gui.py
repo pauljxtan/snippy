@@ -7,7 +7,8 @@ DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
 ROOT_TITLE = "Snippy"
 WELCOME_MESSAGE  = ("Welcome to Snippy!\n"
-                    "To get started, right-click on any snippet above.")
+                    "To get started, click on 'Create snippet' on the top menu,"
+                    " or right-click on any snippet above.")
 
 
 class SnippyGui(ttk.Frame):
@@ -26,9 +27,27 @@ class SnippyGui(ttk.Frame):
         self._notebook.pack(fill=tk.BOTH, expand=True)
         self._make_welcome_tab()
 
+        self._make_menubar()
+
         self._context_menu = tk.Menu(self)
         self._make_context_menu()
         self._row_id_context_menu = None
+
+    def _make_menubar(self):
+        def _show_create_form():
+            form = self._make_create_form()
+            self._notebook.add_tab(form, "Create snippet")
+            self._notebook.select(form)
+
+        menubar = tk.Menu(self._parent)
+
+        dropdown_file = tk.Menu(menubar)
+        dropdown_file.add_command(label="Exit")
+        menubar.add_cascade(label="File", menu=dropdown_file)
+
+        menubar.add_command(label="Create snippet", command=_show_create_form)
+
+        self._parent.config(menu=menubar)
 
     def _update_databox(self):
         self._databox.clear_all_rows()
@@ -47,11 +66,6 @@ class SnippyGui(ttk.Frame):
         self._notebook.add_tab(page, "Welcome!")
 
     def _make_context_menu(self):
-        def _show_create_form():
-            form = self._make_create_form()
-            self._notebook.add_tab(form, "Create snippet")
-            self._notebook.select(form)
-
         def _show_edit_form():
             form = self._make_edit_form(self._row_id_context_menu)
             self._notebook.add_tab(form, "Edit snippet")
@@ -60,7 +74,6 @@ class SnippyGui(ttk.Frame):
         def _delete_snippet():
             raise NotImplementedError
 
-        self._context_menu.add_command(label="Create", command=_show_create_form)
         self._context_menu.add_command(label="Edit", command=_show_edit_form)
         self._context_menu.add_command(label="Delete", command=_delete_snippet)
 
