@@ -55,7 +55,7 @@ class SnippyDB:
         return rows.fetchall()
 
     def get_row(self, row_id):
-        command = ("SELECT *, ROWID FROM %s WHERE ROWID=%s"
+        command = ("SELECT *, ROWID FROM %s WHERE ROWID = %s"
                    % (self._table_name, row_id))
         if self.verbose:
             print command
@@ -77,6 +77,16 @@ class SnippyDB:
         command = ("INSERT INTO %s VALUES (DATETIME(), '%s', '%s', '%s', '%s')"
                    % (self._table_name, snippet_type, snippet_lang,
                       snippet_title, snippet_code))
+        if self.verbose:
+            print command
+        self._conn.execute(command)
+
+    def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title,
+                 snippet_code):
+        command = ("UPDATE %s SET type = '%s', language = '%s', title = '%s', "
+                   "code = '%s' WHERE ROWID = %s"
+                   % (self._table_name, snippet_type, snippet_lang,
+                      snippet_title, snippet_code, row_id))
         if self.verbose:
             print command
         self._conn.execute(command)
