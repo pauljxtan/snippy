@@ -6,10 +6,14 @@ from snippy.widgets import DataBox, MyNotebook
 DB_FILENAME = "snippy.db"
 TABLE_NAME = "snippy"
 ROOT_TITLE = "Snippy"
+WELCOME_MESSAGE  = ("Welcome to Snippy!\n"
+                    "To get started, right-click on any snippet above.")
+
 
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db, verbose=False):
         ttk.Frame.__init__(self, parent)
+
         self._parent = parent
         self._db = db
         self.verbose = verbose
@@ -31,10 +35,31 @@ class SnippyGui(ttk.Frame):
         for _, row in enumerate(rows):
             self._databox.insert_row(row)
 
+    def _make_welcome_tab(self):
+        page = ttk.Frame(self._notebook)
+        page.pack(fill=tk.BOTH, expand=True)
+
+        text = WELCOME_MESSAGE
+        label = tk.Label(page, text=text)
+        label.pack(fill=tk.BOTH, expand=True)
+
+        self._notebook.add_tab(page, "Welcome!")
+
     def _make_context_menu(self):
-        self._context_menu.add_command(label="Create", command=self._show_create_form)
-        self._context_menu.add_command(label="Edit")
-        self._context_menu.add_command(label="Delete")
+        def _show_create_form():
+            form = self._make_create_form()
+            self._notebook.add_tab(form, "Create snippet")
+            self._notebook.select(form)
+
+        def _show_edit_form():
+            raise NotImplementedError
+
+        def _delete_snippet():
+            raise NotImplementedError
+
+        self._context_menu.add_command(label="Create", command=_show_create_form)
+        self._context_menu.add_command(label="Edit", command=_show_edit_form)
+        self._context_menu.add_command(label="Delete", command=_delete_snippet)
 
     def _show_context_menu(self, event):
         iid = self._databox.tree.identify_row(event.y)
@@ -42,11 +67,6 @@ class SnippyGui(ttk.Frame):
             print "Showing context menu for row %s" % iid
             # self._databox.tree.selection_set(iid)
             self._context_menu.post(event.x_root, event.y_root)
-
-    def _show_create_form(self):
-        form = self._make_create_form()
-        self._notebook.add_tab(form, "Create snippet")
-        self._notebook.select(form)
 
     def _make_create_form(self):
         form = ttk.Frame()
@@ -68,33 +88,16 @@ class SnippyGui(ttk.Frame):
         entry_title.grid(row=3, column=1)
         text_code.grid(row=4, column=1)
 
-        def create_snippet():
+        def _create_snippet():
            self._db.insert_row(entry_type.get(), entry_lang.get(),
                                entry_title.get(), text_code.get("1.0", tk.END))
            self._update_databox()
+           self._notebook.close_selected_tab()
 
-        ttk.Button(form, text="Create", command=create_snippet).grid(
+        ttk.Button(form, text="Create", command=_create_snippet).grid(
             row=5, columnspan=2)
 
         return form
-
-    def _make_welcome_tab(self):
-        page = ttk.Frame(self._notebook)
-        page.pack(fill=tk.BOTH, expand=True)
-
-        text = "Welcome to Snippy!\nTo get started, right-click on any snippet above."
-        label = tk.Label(page, text=text)
-        label.pack(fill=tk.BOTH, expand=True)
-
-        self._notebook.add_tab(page, "Welcome!")
-
-    #def _add_notebook_page(self, tab_text, text=""):
-    #    page = ttk.Frame(self._notebook)
-    #    page_text = tk.Text(page)
-    #    page_text.insert(tk.END, text)
-    #    page_text.pack(fill=tk.BOTH, expand=True)
-    #    #self._notebook.add(page, text=tab_text)
-    #    self._notebook.add_tab(page, tab_text)
 
 
 def main():

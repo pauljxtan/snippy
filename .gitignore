@@ -63,3 +63,4 @@ target/
 
 # Databases
 *.db
+/.vs/snippy/v14/.suo

@@ -54,7 +54,12 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
 
     def _make_context_menu(self):
         menu = tk.Menu(self)
-        menu.add_command(label="Close tab", command=self._close_tab)
+
+        def _close_tab_right_clicked():
+            self._notebook.forget(self._index_right_clicked)
+            self._index_right_clicked = None
+
+        menu.add_command(label="Close tab", command=_close_tab_right_clicked)
         return menu
 
     def _on_right_click(self, event):
@@ -63,9 +68,8 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
             self._index_right_clicked = index
             self._context_menu.post(event.x_root, event.y_root)
 
-    def _close_tab(self):
-        self._notebook.forget(self._index_right_clicked)
-        self._index_right_clicked = None
-
     def select(self, tab_id):
         self._notebook.select(tab_id)
+
+    def close_selected_tab(self):
+        self._notebook.forget(self._notebook.select())
