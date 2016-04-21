@@ -28,6 +28,7 @@ class SnippyGui(ttk.Frame):
 
         self._context_menu = tk.Menu(self)
         self._make_context_menu()
+        self._row_id_context_menu = None
 
     def _update_databox(self):
         self._databox.clear_all_rows()
@@ -52,7 +53,9 @@ class SnippyGui(ttk.Frame):
             self._notebook.select(form)
 
         def _show_edit_form():
-            raise NotImplementedError
+            form = self._make_edit_form(self._row_id_context_menu)
+            self._notebook.add_tab(form, "Edit snippet")
+            self._notebook.select(form)
 
         def _delete_snippet():
             raise NotImplementedError
@@ -64,8 +67,8 @@ class SnippyGui(ttk.Frame):
     def _show_context_menu(self, event):
         iid = self._databox.tree.identify_row(event.y)
         if iid:
-            print "Showing context menu for row %s" % iid
-            # self._databox.tree.selection_set(iid)
+            self._databox.tree.selection_set(iid)
+            self._row_id_context_menu = self._databox.tree.selection()[0]
             self._context_menu.post(event.x_root, event.y_root)
 
     def _make_create_form(self):
@@ -85,6 +88,7 @@ class SnippyGui(ttk.Frame):
 
         entry_type.grid(row=1, column=1)
         entry_lang.grid(row=2, column=1)
+
         entry_title.grid(row=3, column=1)
         text_code.grid(row=4, column=1)
 
@@ -95,6 +99,44 @@ class SnippyGui(ttk.Frame):
            self._notebook.close_selected_tab()
 
         ttk.Button(form, text="Create", command=_create_snippet).grid(
+            row=5, columnspan=2)
+
+        return form
+
+    def _make_edit_form(self, row_id):
+        form = ttk.Frame()
+
+        ttk.Label(form, text="Edit snippet").grid(row=0, columnspan=2)
+
+        ttk.Label(form, text="Type").grid(row=1, column=0)
+        ttk.Label(form, text="Language").grid(row=2, column=0)
+        ttk.Label(form, text="Title").grid(row=3, column=0)
+        ttk.Label(form, text="Code").grid(row=4, column=0)
+
+        entry_type = ttk.Entry(form)
+        entry_lang = ttk.Entry(form)
+        entry_title = ttk.Entry(form)
+        text_code = tk.Text(form)
+
+        # Initialize with existing values
+        row = self._db.get_row(row_id)
+        entry_type.insert(tk.END, row[1])
+        entry_lang.insert(tk.END, row[2])
+        entry_title.insert(tk.END, row[3])
+        text_code.insert(tk.END, row[4])
+
+        entry_type.grid(row=1, column=1)
+        entry_lang.grid(row=2, column=1)
+        entry_title.grid(row=3, column=1)
+        text_code.grid(row=4, column=1)
+
+        def _edit_snippet():
+           self._db.edit_row(row_id, entry_type.get(), entry_lang.get(),
+                             entry_title.get(), text_code.get("1.0", tk.END))
+           self._update_databox()
+           self._notebook.close_selected_tab()
+
+        ttk.Button(form, text="Submit", command=_edit_snippet).grid(
             row=5, columnspan=2)
 
         return form
