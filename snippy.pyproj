@@ -22,7 +22,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="snippy\database.py" />
+    <Compile Include="snippy\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="snippy\gui.py" />
+    <Compile Include="snippy\menus.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="snippy\utils.py">
       <SubType>Code</SubType>
     </Compile>
