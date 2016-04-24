@@ -24,10 +24,10 @@ class FormMaker:
         text_code.grid(row=4, column=1)
 
         def _create_snippet():
-           gui._db.insert_row(entry_type.get(), entry_lang.get(),
+           gui.insert_row(entry_type.get(), entry_lang.get(),
                                entry_title.get(), text_code.get("1.0", tk.END))
-           gui._update_databox()
-           gui._notebook.close_selected_tab()
+           gui.update_databox()
+           gui.close_selected_tab()
 
         ttk.Button(form, text="Create", command=_create_snippet).grid(
             row=5, columnspan=2)
@@ -62,10 +62,10 @@ class FormMaker:
         text_code.grid(row=4, column=1)
 
         def _edit_snippet():
-           gui._db.edit_row(row_id, entry_type.get(), entry_lang.get(),
+           gui.edit_row(row_id, entry_type.get(), entry_lang.get(),
                              entry_title.get(), text_code.get("1.0", tk.END))
-           gui._update_databox()
-           gui._notebook.close_selected_tab()
+           gui.update_databox()
+           gui.close_selected_tab()
 
         ttk.Button(form, text="Submit", command=_edit_snippet).grid(
             row=5, columnspan=2)

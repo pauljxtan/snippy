@@ -23,7 +23,7 @@ class SnippyGui(ttk.Frame):
 
         self._databox = DataBox(self)
         self._databox.pack(fill=tk.BOTH, expand=True)
-        self._update_databox()
+        self.update_databox()
 
         self._notebook = MyNotebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
@@ -40,7 +40,7 @@ class SnippyGui(ttk.Frame):
 
         self._form_maker = FormMaker()
 
-    def _update_databox(self):
+    def update_databox(self):
         self._databox.clear_all_rows()
         rows = self._db.get_all_rows()
         for _, row in enumerate(rows):
@@ -62,6 +62,26 @@ class SnippyGui(ttk.Frame):
             self._databox.tree.selection_set(iid)
             self._row_id_context_menu = self._databox.tree.selection()[0]
             self._context_menu.post(event.x_root, event.y_root)
+
+    #---- Database operations -------------------------------------------------
+    def get_row(self, row_id):
+        return self._db.get_row(row_id)
+
+    def insert_row(self, snippet_type, snippet_lang, snippet_title,
+                   snippet_code):
+        self._db.insert_row(snippet_type, snippet_lang, snippet_title,
+                            snippet_code)
+
+    def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title,
+                 snippet_code):
+        self._db.edit_row(row_id, snippet_type, snippet_lang, snippet_title,
+                      snippet_code)
+    #--------------------------------------------------------------------------
+
+    #---- Notebook operations -------------------------------------------------
+    def close_selected_tab(self):
+        self._notebook.close_selected_tab()
+    #--------------------------------------------------------------------------
 
 
 def main():
