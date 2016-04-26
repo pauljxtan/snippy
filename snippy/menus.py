@@ -1,5 +1,6 @@
 import Tkinter as tk
 import ttk
+import tkMessageBox
 
 
 class MenuMaker:
@@ -25,12 +26,14 @@ class MenuMaker:
             gui._notebook.add_tab(form, "Edit snippet")
             gui._notebook.select(form)
 
-        def _delete_snippet():
-            raise NotImplementedError
+        def _delete_confirm():
+            result = tkMessageBox.askquestion("Delete snippet", "Are you sure?")
+            if result == 'yes':
+                gui.delete_row(gui._row_id_context_menu)
 
         context_menu = tk.Menu(gui)
 
         context_menu.add_command(label="Edit", command=_show_edit_form)
-        context_menu.add_command(label="Delete", command=_delete_snippet)
+        context_menu.add_command(label="Delete", command=_delete_confirm)
 
         return context_menu

@@ -71,11 +71,17 @@ class SnippyGui(ttk.Frame):
                    snippet_code):
         self._db.insert_row(snippet_type, snippet_lang, snippet_title,
                             snippet_code)
+        self.update_databox()
 
     def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title,
                  snippet_code):
         self._db.edit_row(row_id, snippet_type, snippet_lang, snippet_title,
                       snippet_code)
+        self.update_databox()
+
+    def delete_row(self, row_id):
+        self._db.delete_row(row_id)
+        self.update_databox()
     #--------------------------------------------------------------------------
 
     #---- Notebook operations -------------------------------------------------

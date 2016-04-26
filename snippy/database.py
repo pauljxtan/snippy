@@ -91,5 +91,12 @@ class SnippyDB:
             print command
         self._conn.execute(command)
 
+    def delete_row(self, row_id):
+        command = ("DELETE FROM %s WHERE ROWID = %s"
+                   % (self._table_name, row_id))
+        if self.verbose:
+            print command
+        self._conn.execute(command)
+
     def __del__(self):
         self._conn.close()

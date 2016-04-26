@@ -26,7 +26,6 @@ class FormMaker:
         def _create_snippet():
            gui.insert_row(entry_type.get(), entry_lang.get(),
                                entry_title.get(), text_code.get("1.0", tk.END))
-           gui.update_databox()
            gui.close_selected_tab()
 
         ttk.Button(form, text="Create", command=_create_snippet).grid(
@@ -64,7 +63,6 @@ class FormMaker:
         def _edit_snippet():
            gui.edit_row(row_id, entry_type.get(), entry_lang.get(),
                              entry_title.get(), text_code.get("1.0", tk.END))
-           gui.update_databox()
            gui.close_selected_tab()
 
         ttk.Button(form, text="Submit", command=_edit_snippet).grid(
