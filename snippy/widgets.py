@@ -1,10 +1,15 @@
-"""Custom widgets"""
+"""
+Custom widgets.
+"""
 
 import Tkinter as tk
 import ttk
 from snippy.database import TABLE_TITLES, TABLE_COLUMNS
 
-class DataBox(ttk.Frame):
+class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
+    """
+    A wrapper around ttk.Treeview for displaying data.
+    """
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent)
         self._parent = parent
@@ -13,14 +18,20 @@ class DataBox(ttk.Frame):
             self.tree.heading(column, text=title)
         # TODO: scrollbars?
         self.tree.pack(fill=tk.BOTH, expand=True)
-        self.tree.bind('<Button-3>', parent._show_context_menu)
+        self.tree.bind('<Button-3>', parent.show_context_menu)
 
     def insert_row(self, row):
+        """
+        Inserts a row into the tree.
+        """
         values = row[:-1]
         iid = row[-1]
         self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
 
     def clear_all_rows(self):
+        """
+        Deletes all rows in the tree.
+        """
         self.tree.delete(*self.tree.get_children())
 
 class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
@@ -53,6 +64,9 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         self._notebook.add(tab_content, text=tab_label, **kw)
 
     def _make_context_menu(self):
+        """
+        Returns a context menu.
+        """
         menu = tk.Menu(self)
 
         def _close_tab_right_clicked():
@@ -63,13 +77,22 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         return menu
 
     def _on_right_click(self, event):
+        """
+        Handles a right-click event.
+        """
         if event.widget.identify(event.x, event.y) == 'label':
             index = event.widget.index('@%d,%d' % (event.x, event.y))
             self._index_right_clicked = index
             self._context_menu.post(event.x_root, event.y_root)
 
     def select(self, tab_id):
+        """
+        Selects a tab.
+        """
         self._notebook.select(tab_id)
 
     def close_selected_tab(self):
+        """
+        Closes the selected tab.
+        """
         self._notebook.forget(self._notebook.select())

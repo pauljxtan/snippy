@@ -1,9 +1,22 @@
+"""
+Snippet creation and editing forms.
+"""
+
 import Tkinter as tk
 import ttk
 
 
-class FormMaker:
-    def make_create_form(self, gui):
+class FormMaker(object):
+    """
+    Creates snippet creation and editing forms.
+    """
+    def __init__(self, gui):
+        self.gui = gui
+
+    def make_create_form(self):
+        """
+        Returns a snippet creation form.
+        """
         form = ttk.Frame()
 
         ttk.Label(form, text="Create snippet").grid(row=0, columnspan=2)
@@ -24,16 +37,19 @@ class FormMaker:
         text_code.grid(row=4, column=1)
 
         def _create_snippet():
-           gui.insert_row(entry_type.get(), entry_lang.get(),
-                               entry_title.get(), text_code.get("1.0", tk.END))
-           gui.close_selected_tab()
+            self.gui.insert_row(entry_type.get(), entry_lang.get(),
+                                entry_title.get(), text_code.get("1.0", tk.END))
+            self.gui.close_selected_tab()
 
         ttk.Button(form, text="Create", command=_create_snippet).grid(
             row=5, columnspan=2)
 
         return form
 
-    def make_edit_form(self, gui, row_id):
+    def make_edit_form(self, row_id):
+        """
+        Returns a snippet editing form.
+        """
         form = ttk.Frame()
 
         ttk.Label(form, text="Edit snippet").grid(row=0, columnspan=2)
@@ -49,7 +65,7 @@ class FormMaker:
         text_code = tk.Text(form)
 
         # Initialize with existing values
-        row = gui._db.get_row(row_id)
+        row = self.gui.get_row(row_id)
         entry_type.insert(tk.END, row[1])
         entry_lang.insert(tk.END, row[2])
         entry_title.insert(tk.END, row[3])
@@ -61,9 +77,9 @@ class FormMaker:
         text_code.grid(row=4, column=1)
 
         def _edit_snippet():
-           gui.edit_row(row_id, entry_type.get(), entry_lang.get(),
-                             entry_title.get(), text_code.get("1.0", tk.END))
-           gui.close_selected_tab()
+            self.gui.edit_row(row_id, entry_type.get(), entry_lang.get(),
+                              entry_title.get(), text_code.get("1.0", tk.END))
+            self.gui.close_selected_tab()
 
         ttk.Button(form, text="Submit", command=_edit_snippet).grid(
             row=5, columnspan=2)

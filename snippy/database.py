@@ -23,7 +23,10 @@ TABLE_COLUMNS = ('creation_date', 'type', 'lang', 'title')
 TABLE_TITLES = ('Creation date', 'Snippet Type', 'Language', 'Title')
 
 
-class SnippyDB:
+class SnippyDB(object):
+    """
+    The database interface.
+    """
     def __init__(self, db_filename, table_name, clobber=False, verbose=False):
         if os.path.isfile(db_filename):
             if not clobber:
@@ -47,6 +50,9 @@ class SnippyDB:
                         EXAMPLE_SNIPPET['title'], EXAMPLE_SNIPPET['code'])
 
     def get_all_rows(self):
+        """
+        Returns all rows in the database.
+        """
         command = "SELECT *, ROWID FROM %s" % self._table_name
         if self.verbose:
             print command
@@ -55,6 +61,9 @@ class SnippyDB:
         return rows.fetchall()
 
     def get_row(self, row_id):
+        """
+        Returns the row specified by the given id.
+        """
         command = ("SELECT *, ROWID FROM %s WHERE ROWID = %s"
                    % (self._table_name, row_id))
         if self.verbose:
@@ -64,6 +73,9 @@ class SnippyDB:
         return row.fetchone()
 
     def get_unique_elem(self, row_id, column):
+        """
+        Returns an element in the row specified by the given id.
+        """
         command = ("SELECT %s FROM %s WHERE ROWID=%s"
                    % (column, self._table_name, row_id))
         if self.verbose:
@@ -74,6 +86,9 @@ class SnippyDB:
 
     def insert_row(self, snippet_type, snippet_lang, snippet_title,
                    snippet_code):
+        """
+        Inserts a row into the database.
+        """
         command = ("INSERT INTO %s VALUES (DATETIME(), '%s', '%s', '%s', '%s')"
                    % (self._table_name, snippet_type, snippet_lang,
                       snippet_title, snippet_code))
@@ -81,8 +96,11 @@ class SnippyDB:
             print command
         self._conn.execute(command)
 
-    def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title,
+    def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title, # pylint: disable=too-many-arguments
                  snippet_code):
+        """
+        Replaces all elements in the row specified by the given id.
+        """
         command = ("UPDATE %s SET type = '%s', language = '%s', title = '%s', "
                    "code = '%s' WHERE ROWID = %s"
                    % (self._table_name, snippet_type, snippet_lang,
@@ -92,6 +110,9 @@ class SnippyDB:
         self._conn.execute(command)
 
     def delete_row(self, row_id):
+        """
+        Deletes the row specified by the given id.
+        """
         command = ("DELETE FROM %s WHERE ROWID = %s"
                    % (self._table_name, row_id))
         if self.verbose:
