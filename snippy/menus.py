@@ -17,6 +17,9 @@ class MenuMaker(object):
         """
         Returns a menubar.
         """
+        def _exit():
+            self.gui.parent.quit()
+
         def _show_create_form():
             form = self.gui.form_maker.make_create_form()
             self.gui.add_tab(form, "Create snippet")
@@ -25,7 +28,7 @@ class MenuMaker(object):
         menubar = tk.Menu(self.gui.parent)
 
         dropdown_file = tk.Menu(menubar)
-        dropdown_file.add_command(label="Exit")
+        dropdown_file.add_command(label="Exit", command=_exit)
         menubar.add_cascade(label="File", menu=dropdown_file)
 
         menubar.add_command(label="Create snippet", command=_show_create_form)
