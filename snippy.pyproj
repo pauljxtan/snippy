@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7c72219a-59d5-446b-bce3-b056086b773f}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>snippy\testing.py</StartupFile>
+    <StartupFile>snippy\testing2.py</StartupFile>
     <SearchPath>.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -46,7 +46,13 @@
     <Compile Include="snippy\logiclayer\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="snippy\presentationlayer\gui.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="snippy\presentationlayer\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\testing2.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\utils\errors.py">
@@ -55,7 +61,6 @@
     <Compile Include="snippy\presentationlayer\forms.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\gui.py" />
     <Compile Include="snippy\utils\logformats.py">
       <SubType>Code</SubType>
     </Compile>

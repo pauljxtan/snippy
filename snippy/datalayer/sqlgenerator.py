@@ -56,14 +56,14 @@ class SqlGenerator:
         return sql
 
     def get_query_all_rows_sql(self):
-        sql = "SELECT * FROM {0};".format(self._table.name)
+        sql = "SELECT *, ROWID FROM {0};".format(self._table.name)
         self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_query_row_by_value_sql(self, column_name, value):
         if column_name not in self._table.schema.get_column_names():
             raise ValueError("Column name is not in table schema")
-        sql = "SELECT * FROM {0} WHERE {1} = ".format(self._table.name,
+        sql = "SELECT *, ROWID FROM {0} WHERE {1} = ".format(self._table.name,
                                                       column_name)
         if isinstance(value, str):
             sql += "'{0}'".format(value)

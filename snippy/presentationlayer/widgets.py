@@ -2,9 +2,14 @@
 Custom widgets.
 """
 
-import Tkinter as tk
-import ttk
-from snippy.database import TABLE_TITLES, TABLE_COLUMNS
+import tkinter as tk
+from tkinter import ttk
+
+from snippy.utils.loggingtools import get_logger
+
+# TODO: import these
+TABLE_COLUMNS = ('creation_date', 'type', 'lang', 'title')
+TABLE_TITLES = ('Creation date', 'Snippet Type', 'Language', 'Title')
 
 class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
     """
@@ -12,6 +17,7 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
     """
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent)
+        self._logger = get_logger('widgets')
         self._parent = parent
         self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
         for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
@@ -24,9 +30,15 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         """
         Inserts a row into the tree.
         """
-        values = row[:-1]
-        iid = row[-1]
-        self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
+        #values = row[:-1]
+        #iid = row[-1]
+        values = (row['creation_date'], row['snippet_type'], row['language'],
+                  row['title'])
+        rowid = row['rowid']
+        try:
+            self.tree.insert("", tk.END, iid=rowid, text=rowid, values=values)
+        except tk.TclError as e:
+            self._logger.error(e.__doc__)
 
     def clear_all_rows(self):
         """

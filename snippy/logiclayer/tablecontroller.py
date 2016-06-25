@@ -24,6 +24,17 @@ class TableController:
         Sqlite.execute_sql(self._db_conn, sql, row)
         self._logger.info("Inserted row [...]")
 
+    def update_row(self, rowid, row):
+        row['rowid'] = rowid
+        sql = self._sql_gen.get_update_row_sql(row)
+        Sqlite.execute_sql(self._db_conn, sql, row)
+        self._logger.info("Updated row [...]")
+
+    def delete_row(self, rowid):
+        sql = self._sql_gen.get_delete_row_sql({'rowid': rowid})
+        Sqlite.execute_sql(self._db_conn, sql, rowid)
+        self._logger.info("Deleted row [...]")
+
     def query_all_rows(self):
         sql = self._sql_gen.get_query_all_rows_sql()
         queryResults = Sqlite.execute_sql(self._db_conn, sql)

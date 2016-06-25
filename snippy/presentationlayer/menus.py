@@ -2,9 +2,7 @@
 The menubar and context menus.
 """
 
-import Tkinter as tk
-import tkMessageBox
-
+import tkinter as tk
 
 class MenuMaker(object):
     """
@@ -46,7 +44,7 @@ class MenuMaker(object):
             self.gui.select_tab(form)
 
         def _delete_confirm():
-            result = tkMessageBox.askquestion("Delete snippet", "Are you sure?")
+            result = tk.messagebox.askquestion("Delete snippet", "Are you sure?")
             if result == 'yes':
                 self.gui.delete_row(self.gui.get_row_id_context_menu())
 

@@ -27,6 +27,7 @@ class Sqlite:
         """Returns a database connection."""
         logger = get_logger('sqlite', logging.DEBUG)
         conn = sqlite3.connect(db_name)
+        conn.row_factory = sqlite3.Row
         logger.info("Obtained connection to DB {0}".format(db_name))
         return conn
 
