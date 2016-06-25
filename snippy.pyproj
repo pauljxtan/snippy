@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7c72219a-59d5-446b-bce3-b056086b773f}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>snippy\gui.py</StartupFile>
+    <StartupFile>snippy\testing.py</StartupFile>
     <SearchPath>.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,22 +21,71 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="snippy\database.py" />
-    <Compile Include="snippy\forms.py">
+    <Compile Include="snippy\datalayer\snippytypes.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\gui.py" />
-    <Compile Include="snippy\menus.py">
+    <Compile Include="snippy\datalayer\tabledefinitions.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\utils.py">
+    <Compile Include="snippy\logiclayer\snippydb.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\widgets.py" />
+    <Compile Include="snippy\logiclayer\tablecontroller.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\logiclayer\snippydb1.py" />
+    <Compile Include="snippy\datalayer\sqlite.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\datalayer\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\datalayer\dbtypes.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\logiclayer\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\presentationlayer\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\utils\errors.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\presentationlayer\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\presentationlayer\gui.py" />
+    <Compile Include="snippy\utils\logformats.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\utils\logging1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\presentationlayer\menus.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\datalayer\sqlgenerator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\testing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\utils\utils.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\utils\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="snippy\presentationlayer\widgets.py" />
     <Compile Include="snippy\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="snippy\" />
+    <Folder Include="snippy\datalayer\" />
+    <Folder Include="snippy\logiclayer\" />
+    <Folder Include="snippy\presentationlayer\" />
+    <Folder Include="snippy\utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />

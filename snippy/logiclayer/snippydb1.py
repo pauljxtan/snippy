@@ -1,6 +1,7 @@
 """
-Database operations.
+Database controller.
 """
+
 import os
 import sqlite3
 
@@ -21,7 +22,6 @@ TABLE_SCHEMA = """(
 
 TABLE_COLUMNS = ('creation_date', 'type', 'lang', 'title')
 TABLE_TITLES = ('Creation date', 'Snippet Type', 'Language', 'Title')
-
 
 class SnippyDB(object):
     """
