@@ -50,7 +50,7 @@ class Logger:
             with open(self.output_file, 'a') as outfile:
                 outfile.write("{0}\n".format(log_output))
         if self.print_to_stdout:
-            print log_output
+            print(log_output)
 
     def _get_log_output(self, severity_level, message):
         timestamp = datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")

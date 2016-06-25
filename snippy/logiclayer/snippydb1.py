@@ -33,7 +33,7 @@ class SnippyDB(object):
                 raise ValueError("Database file %s already exists"
                                  % db_filename)
             if verbose:
-                print "Overwriting %s" % db_filename
+                print("Overwriting %s" % db_filename)
                 os.remove(db_filename)
 
         self._db_filename = db_filename
@@ -44,7 +44,7 @@ class SnippyDB(object):
         # Initialize the table with some example data
         command = "CREATE TABLE %s %s" % (self._table_name, TABLE_SCHEMA)
         if verbose:
-            print command
+            print(command)
         self._conn.execute(command)
         self.insert_row(EXAMPLE_SNIPPET['type'], EXAMPLE_SNIPPET['lang'],
                         EXAMPLE_SNIPPET['title'], EXAMPLE_SNIPPET['code'])
@@ -55,7 +55,7 @@ class SnippyDB(object):
         """
         command = "SELECT *, ROWID FROM %s" % self._table_name
         if self.verbose:
-            print command
+            print(command)
         rows = self._conn.execute(command)
 
         return rows.fetchall()
@@ -67,7 +67,7 @@ class SnippyDB(object):
         command = ("SELECT *, ROWID FROM %s WHERE ROWID = %s"
                    % (self._table_name, row_id))
         if self.verbose:
-            print command
+            print(command)
         row = self._conn.execute(command)
 
         return row.fetchone()
@@ -79,7 +79,7 @@ class SnippyDB(object):
         command = ("SELECT %s FROM %s WHERE ROWID=%s"
                    % (column, self._table_name, row_id))
         if self.verbose:
-            print command
+            print(command)
         elem = self._conn.execute(command)
 
         return elem.fetchone()[0]
@@ -93,7 +93,7 @@ class SnippyDB(object):
                    % (self._table_name, snippet_type, snippet_lang,
                       snippet_title, snippet_code))
         if self.verbose:
-            print command
+            print(command)
         self._conn.execute(command)
 
     def edit_row(self, row_id, snippet_type, snippet_lang, snippet_title, # pylint: disable=too-many-arguments
@@ -106,7 +106,7 @@ class SnippyDB(object):
                    % (self._table_name, snippet_type, snippet_lang,
                       snippet_title, snippet_code, row_id))
         if self.verbose:
-            print command
+            print(command)
         self._conn.execute(command)
 
     def delete_row(self, row_id):
@@ -116,7 +116,7 @@ class SnippyDB(object):
         command = ("DELETE FROM %s WHERE ROWID = %s"
                    % (self._table_name, row_id))
         if self.verbose:
-            print command
+            print(command)
         self._conn.execute(command)
 
     def __del__(self):

@@ -1,6 +1,7 @@
 import datetime
 import logging
 import sqlite3
+from snippy.utils.loggingtools import get_logger
 
 # TODO: probably better to use built-in conversions
 
@@ -24,16 +25,17 @@ class Sqlite:
     @classmethod
     def get_db_connection(cls, db_name):
         """Returns a database connection."""
+        logger = get_logger('sqlite', logging.DEBUG)
         conn = sqlite3.connect(db_name)
-        logging.info("Obtained connection to DB {0}".format(db_name))
+        logger.info("Obtained connection to DB {0}".format(db_name))
         return conn
 
     @classmethod
     def execute_sql(cls, db_conn, sql, args=None):
         """Executes the given SQL."""
+        logger = get_logger('sqlite', logging.DEBUG)
         cursor = db_conn.cursor()
         if args:
-            print sql, args
             cursor.execute(sql, args)
         else:
             cursor.execute(sql)
@@ -45,7 +47,7 @@ class Sqlite:
             # Not a query
             pass
 
-        logging.debug("Execute: {0}, {1}".format(sql, args))
+        logger.debug("Execute: {0}, {1}".format(sql, args))
         db_conn.commit()
         cursor.close()
 

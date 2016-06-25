@@ -2,17 +2,19 @@
 SQL generators.
 """
 import logging
+from snippy.utils.loggingtools import get_logger
 from snippy.datalayer.sqlite import python_to_sqlite_type
 
 class SqlGenerator:
     def __init__(self, table):
         self._table = table
+        self._logger = get_logger('sqlgenerator', logging.DEBUG)
 
     def get_create_table_sql(self):
         sql = ("CREATE TABLE IF NOT EXISTS {0} {1};"
                .format(self._table.name,
                        self._get_format_schema_sql(self._table.schema)))
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def _get_format_schema_sql(self, schema):
@@ -23,12 +25,12 @@ class SqlGenerator:
         sql += ("{0} {1})"
                 .format(schema.columns[-1].name,
                         python_to_sqlite_type(schema.columns[-1].dtype)))
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_drop_table_sql(self):
         sql = "DROP TABLE {0};".format(self._table.name)
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_insert_row_sql(self):
@@ -37,7 +39,7 @@ class SqlGenerator:
         cols_param_str = ", ".join([":{0}".format(col) for col in cols])
         sql = ("INSERT INTO {0} ({1}) values ({2});"
                .format(self._table.name, cols_str, cols_param_str))
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_update_row_sql(self):
@@ -45,17 +47,17 @@ class SqlGenerator:
         sql = ("UPDATE {0} SET ".format(self._table.name))
         sql += ", ".join([":{0} = ?".format(col) for col in cols])
         sql += "WHERE :rowid = ?"
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_delete_row_sql(self):
         sql = "DELETE FROM {0} WHERE :rowid = ?".format(self._table.name)
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_query_all_rows_sql(self):
         sql = "SELECT * FROM {0};".format(self._table.name)
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_query_row_by_value_sql(self, column_name, value):
@@ -67,7 +69,7 @@ class SqlGenerator:
             sql += "'{0}'".format(value)
         else:
             sql += "{0}".format(value)
-        logging.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     #def get_insert_row_sql(self, row):

@@ -10,12 +10,12 @@ from snippy.logiclayer.tablecontroller import TableController
 from snippy.datalayer.tabledefinitions import TABLE_STANDARD
 from snippy.logiclayer.snippydb import SnippyDB
 
-logging.basicConfig(
-    filename="test1.log",
-    filemode='a',
-    level=logging.DEBUG,
-    format=LOG_FORMAT_STANDARD
-    )
+#logging.basicConfig(
+#    filename="test1.log",
+#    filemode='a',
+#    level=logging.DEBUG,
+#    format=LOG_FORMAT_STANDARD
+#    )
 
 columns = (Column('creation_date', datetime.datetime), Column('title', str))
 schema = Schema(columns)
@@ -27,23 +27,23 @@ sql_generator = SqlGenerator(Table("mytable", schema))
 #table_ctlr = TableController(db_conn, table)
 #table_ctlr.create_table()
 
-#print sql_generator.get_create_table_sql()
+#print(sql_generator.get_create_table_sql()
 #values = (datetime.datetime.now(), "hello world")
-#print sql_generator.get_insert_row_sql()
-#print sql_generator.get_query_all_rows_sql()
-#print sql_generator.get_query_row_by_value_sql('title', "hello world")
+#print(sql_generator.get_insert_row_sql()
+#print(sql_generator.get_query_all_rows_sql()
+#print(sql_generator.get_query_row_by_value_sql('title', "hello world")
 
 
 #row = {'creation_date': datetime.datetime.now(), 'title': "hello, world"}
-#print row
+#print(row
 #table_ctlr.insert_row(row)
-#print table_ctlr.query_all_rows()
-#print table_ctlr.query_row_by_value('title', "hello, world")
+#print(table_ctlr.query_all_rows()
+#print(table_ctlr.query_row_by_value('title', "hello, world")
 
 snippet = Snippet(datetime.datetime.now(), "function", "Python", "Simple hello world",
-                  "def hello_world():\n    print \"Hello, world!\"")
+                  "def hello_world():\n    print(\"Hello, world!\"")
 snippet2 = Snippet(datetime.datetime.now(), "function", "Python", "Simple hello world2",
-                  "def hello_world():\n    print \"Hello, world!\"")
+                  "def hello_world():\n    print(\"Hello, world!\"")
 #row = {'creation_date': snippet.cdate, 'snippet_type': snippet.stype, 'language': snippet.lang,
 #       'title': snippet.title, 'code': snippet.code}
 #table = TABLE_STANDARD
@@ -51,13 +51,13 @@ snippet2 = Snippet(datetime.datetime.now(), "function", "Python", "Simple hello 
 #table_ctlr.create_table(True)
 #table_ctlr.insert_row(row)
 #table_ctlr.insert_row(row)
-#print table_ctlr.query_all_rows()
-#print table_ctlr.query_row_by_value('title', "Simple hello world")
+#print(table_ctlr.query_all_rows()
+#print(table_ctlr.query_row_by_value('title', "Simple hello world")
 
 db = SnippyDB("snippy.db")
 db.insert_snippet(snippet)
-print db.query_all_rows()
+print(db.query_all_rows())
 db.insert_snippet(snippet2)
 db.insert_snippet(snippet2)
-print db.query_all_rows()
-print db.query_by_title("Simple hello world")
+print(db.query_all_rows())
+print(db.query_by_title("Simple hello world"))

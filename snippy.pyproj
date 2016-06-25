@@ -71,6 +71,9 @@
     <Compile Include="snippy\testing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="snippy\utils\loggingtools.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="snippy\utils\utils.py">
       <SubType>Code</SubType>
     </Compile>

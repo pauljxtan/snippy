@@ -22,7 +22,7 @@ class SnippyDB:
 
         self._table_ctlr.create_table()
         if verbose:
-            print "Created table {0}".format(self._table.name) 
+            print("Created table {0}".format(self._table.name))
 
         self._table_ctlr.insert_row(EXAMPLE_SNIPPET)
 
@@ -47,7 +47,7 @@ class SnippyDB:
         return self._table_ctlr.query_row_by_value('title', title)
 
     def insert_snippet(self, snippet):
-        print self._get_row_from_snippet(snippet)
+        print(self._get_row_from_snippet(snippet))
         self._table_ctlr.insert_row(self._get_row_from_snippet(snippet))
 
     def _get_row_from_snippet(self, snippet):
