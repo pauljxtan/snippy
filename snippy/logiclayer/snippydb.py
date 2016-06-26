@@ -16,7 +16,7 @@ class SnippyDb:
     def __init__(self, db_name, verbose=False):
         self._db_name = db_name
         self._db_conn = Sqlite.get_db_connection(db_name)
-        self._table = TABLE_STANDARD
+        self._table = TABLE_STANDARD.table
         self._table_ctlr = TableController(self._db_conn, self._table)
         self.verbose = verbose
 

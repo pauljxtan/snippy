@@ -5,11 +5,8 @@ Custom widgets.
 import tkinter as tk
 from tkinter import ttk
 
+from snippy.datalayer.tabledefinitions import TABLE_STANDARD
 from snippy.utils.loggingtools import get_logger
-
-# TODO: import these
-TABLE_COLUMNS = ('creation_date', 'type', 'lang', 'title')
-TABLE_TITLES = ('Creation date', 'Snippet Type', 'Language', 'Title')
 
 class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
     """
@@ -19,8 +16,9 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         ttk.Frame.__init__(self, parent)
         self._logger = get_logger('widgets')
         self._parent = parent
-        self.tree = ttk.Treeview(self, columns=TABLE_COLUMNS)
-        for column, title in zip(TABLE_COLUMNS, TABLE_TITLES):
+        self.tree = ttk.Treeview(self, columns=TABLE_STANDARD.col_names_databox)
+        for column, title in zip(TABLE_STANDARD.col_names_databox,
+                                 TABLE_STANDARD.col_names_display_databox):
             self.tree.heading(column, text=title)
         # TODO: scrollbars?
         self.tree.pack(fill=tk.BOTH, expand=True)
@@ -68,7 +66,7 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         """
         Adds a new tab to the notebook.
 
-        :param tab_content: Stuff to put in the tab (typically a Frame)
+        :param tab_content: Content to put in the tab (typically a Frame)
         :type tab_content: Tkinter.Widget
         :param tab_label: Tab label
         :type tab_label: String

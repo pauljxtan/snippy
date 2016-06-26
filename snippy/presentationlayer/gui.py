@@ -48,9 +48,7 @@ class SnippyGui(ttk.Frame):
         self._notebook.add_tab(page, "Welcome!")
 
     def show_context_menu(self, event):
-        """
-        Displays the context menu for the selected row.
-        """
+        """Displays the context menu for the selected row."""
         rowid = self._databox.tree.identify_row(event.y)
         if rowid:
             self._databox.tree.selection_set(rowid)
@@ -58,9 +56,7 @@ class SnippyGui(ttk.Frame):
             self._context_menu.post(event.x_root, event.y_root)
 
     def get_row_id_context_menu(self):
-        """
-        Returns the row id for which to display the context menu.
-        """
+        """Returns the row id for which to display the context menu."""
         return self._row_id_context_menu
 
     #==== Database operations
