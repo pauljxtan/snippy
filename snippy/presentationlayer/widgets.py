@@ -16,20 +16,27 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         ttk.Frame.__init__(self, parent)
         self._logger = get_logger('widgets')
         self._parent = parent
-        self.tree = ttk.Treeview(self, columns=TABLE_STANDARD.col_names_databox)
+
+        self.tree = ttk.Treeview(self,
+                                 columns=TABLE_STANDARD.col_names_databox)
         for column, title in zip(TABLE_STANDARD.col_names_databox,
                                  TABLE_STANDARD.col_names_display_databox):
             self.tree.heading(column, text=title)
-        # TODO: scrollbars?
         self.tree.pack(fill=tk.BOTH, expand=True)
         self.tree.bind('<Button-3>', parent.show_context_menu)
+
+        scrollbar_x = ttk.Scrollbar(self.tree, orient=tk.HORIZONTAL,
+                                    command=self.tree.xview)
+        scrollbar_y = ttk.Scrollbar(self.tree, orient=tk.VERTICAL,
+                                    command=self.tree.yview)
+        self.tree.configure(xscroll=scrollbar_x.set, yscroll=scrollbar_y.set)
+        scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+        scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
 
     def insert_row(self, row):
         """
         Inserts a row into the tree.
         """
-        #values = row[:-1]
-        #iid = row[-1]
         values = (row['creation_date'], row['snippet_type'], row['language'],
                   row['title'])
         rowid = row['rowid']

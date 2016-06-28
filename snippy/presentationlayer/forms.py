@@ -2,9 +2,10 @@
 Snippet creation and editing forms.
 """
 
+import datetime
 import tkinter as tk
 from tkinter import ttk
-
+from snippy.datalayer.snippytypes import Snippet
 
 class FormMaker(object):
     """
@@ -37,8 +38,10 @@ class FormMaker(object):
         text_code.grid(row=4, column=1)
 
         def _create_snippet():
-            self.gui.insert_row(entry_type.get(), entry_lang.get(),
-                                entry_title.get(), text_code.get("1.0", tk.END))
+            snippet = Snippet(datetime.datetime.now(), entry_type.get(),
+                              entry_lang.get(), entry_title.get(),
+                              text_code.get("1.0", tk.END))
+            self.gui.insert_snippet(snippet)
             self.gui.close_selected_tab()
 
         ttk.Button(form, text="Create", command=_create_snippet).grid(

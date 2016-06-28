@@ -68,6 +68,7 @@ class SnippyGui(ttk.Frame):
 
     def insert_snippet(self, snippet):
         self._db.insert_snippet(snippet)
+        self.update_databox()
 
     def update_snippet(self, rowid, snippet):
         self._db.update_snippet(rowid, snippet)

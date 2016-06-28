@@ -8,6 +8,8 @@ ROOT_TITLE = "Snippy"
 
 snippy_db = SnippyDb(DB_FILENAME)
 
+snippy_db._db_conn.execute("DELETE FROM snippy;")
+
 root = tk.Tk()
 root.title = ROOT_TITLE
 snippy_gui = SnippyGui(root, snippy_db)
