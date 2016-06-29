@@ -1,5 +1,5 @@
 import datetime
-from snippy.datalayer.dbtypes import Column, Schema, Table
+from snippy.data.dbtypes import Column, Schema, Table
 
 _COLUMNS_STANDARD = (
     Column('creation_date', datetime.datetime),
@@ -12,7 +12,16 @@ _SCHEMA_STANDARD = Schema(_COLUMNS_STANDARD)
 TABLE_STANDARD = Table('snippy', _SCHEMA_STANDARD)
 
 class TableDefinition:
+    """Encapsulates various properties of a database table."""
     def __init__(self, name, columns, databox_indices=None):
+        """
+        :param name: Table name
+        :type name: str
+        :param columns: Table columns
+        :type columns: list(Column)
+        :param databox_indices: Indices of columns to display in databox
+        :type databox_indices = list(int)
+        """
         if databox_indices is None:
             self.databox_indices = tuple(range(len(columns)))
         else:

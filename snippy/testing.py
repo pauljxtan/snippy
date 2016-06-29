@@ -1,14 +1,14 @@
 import datetime
 import logging
-from snippy.datalayer.dbtypes import Column, Table, Schema
-from snippy.datalayer.sqlgenerator import SqlGenerator
-from snippy.datalayer.sqlite import Sqlite
+from snippy.data.dbtypes import Column, Table, Schema
+from snippy.data.sqlgenerator import SqlGenerator
+from snippy.data.sqlite import Sqlite
 #from snippy.utils.logging import Logger, SeverityLevels
 from snippy.utils.logformats import LOG_FORMAT_STANDARD
-from snippy.datalayer.snippytypes import Snippet
-from snippy.logiclayer.tablecontroller import TableController
-from snippy.datalayer.tabledefinitions import TABLE_STANDARD
-from snippy.logiclayer.snippydb import SnippyDB
+from snippy.data.snippytypes import Snippet
+from snippy.logic.tablecontroller import TableController
+from snippy.data.tabledefinitions import TABLE_STANDARD
+from snippy.logic.snippydb import SnippyDB
 
 #logging.basicConfig(
 #    filename="test1.log",

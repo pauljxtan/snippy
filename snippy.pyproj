@@ -21,10 +21,10 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="snippy\datalayer\snippytypes.py">
+    <Compile Include="snippy\data\snippytypes.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\datalayer\tabledefinitions.py">
+    <Compile Include="snippy\data\tabledefinitions.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\logiclayer\snippydb.py">
@@ -34,13 +34,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\logiclayer\snippydb1.py" />
-    <Compile Include="snippy\datalayer\sqlite.py">
+    <Compile Include="snippy\data\sqlite.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\datalayer\__init__.py">
+    <Compile Include="snippy\data\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\datalayer\dbtypes.py">
+    <Compile Include="snippy\data\dbtypes.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\logiclayer\__init__.py">
@@ -70,7 +70,7 @@
     <Compile Include="snippy\presentationlayer\menus.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\datalayer\sqlgenerator.py">
+    <Compile Include="snippy\data\sqlgenerator.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\testing.py">
@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="snippy\" />
-    <Folder Include="snippy\datalayer\" />
+    <Folder Include="snippy\data\" />
     <Folder Include="snippy\logiclayer\" />
     <Folder Include="snippy\presentationlayer\" />
     <Folder Include="snippy\utils\" />

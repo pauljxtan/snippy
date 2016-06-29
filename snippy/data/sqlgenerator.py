@@ -3,10 +3,14 @@ SQL generators.
 """
 import logging
 from snippy.utils.loggingtools import get_logger
-from snippy.datalayer.sqlite import python_to_sqlite_type
+from snippy.data.sqlite import python_to_sqlite_type
 
 class SqlGenerator:
     def __init__(self, table):
+        """
+        :param table: Database table
+        :type table: snippy.data.dbtypes.Table
+        """
         self._table = table
         self._logger = get_logger('sqlgenerator', logging.DEBUG)
 
@@ -18,6 +22,10 @@ class SqlGenerator:
         return sql
 
     def _get_format_schema_sql(self, schema):
+        """
+        :param schema: Table schema
+        :type schema: snippy.data.dbtypes.Schema
+        """
         sql = "("
         for col in schema.columns[:-1]:
             sql += "{0} {1}, ".format(col.name,
@@ -61,6 +69,12 @@ class SqlGenerator:
         return sql
 
     def get_query_row_by_value_sql(self, column_name, value):
+        """
+        :param column_name: Column name
+        :type column_name: str
+        :param value: Search value
+        :type value: [Column datatype]
+        """
         if column_name not in self._table.schema.get_column_names():
             raise ValueError("Column name is not in table schema")
         sql = "SELECT *, ROWID FROM {0} WHERE {1} = ".format(self._table.name,

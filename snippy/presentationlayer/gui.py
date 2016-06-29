@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
-from snippy.logiclayer.snippydb import SnippyDb
-from snippy.presentationlayer.widgets import DataBox, MyNotebook
-from snippy.presentationlayer.forms import FormMaker
-from snippy.presentationlayer.menus import MenuMaker
+from snippy.logic.snippydb import SnippyDb
+from snippy.presentation.widgets import DataBox, MyNotebook
+from snippy.presentation.forms import FormMaker
+from snippy.presentation.menus import MenuMaker
 
 WELCOME_MESSAGE = ("Welcome to Snippy!\n"
                    "To get started, click on 'Create snippet' on the top menu,"
@@ -12,6 +12,12 @@ WELCOME_MESSAGE = ("Welcome to Snippy!\n"
 
 class SnippyGui(ttk.Frame):
     def __init__(self, parent, db, verbose=False):
+        """
+        :param parent: Parent widget
+        :type parent: TKinter.Widget
+        :param db: Database/table controller
+        :type db: snippy.tablecontroller.TableController
+        """
         ttk.Frame.__init__(self)
         self.parent = parent
         self._db = db

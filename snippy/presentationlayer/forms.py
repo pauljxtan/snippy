@@ -5,7 +5,7 @@ Snippet creation and editing forms.
 import datetime
 import tkinter as tk
 from tkinter import ttk
-from snippy.datalayer.snippytypes import Snippet
+from snippy.data.snippytypes import Snippet
 
 class FormMaker(object):
     """

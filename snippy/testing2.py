@@ -1,7 +1,7 @@
 import tkinter as tk
 
-from snippy.logiclayer.snippydb import SnippyDb
-from snippy.presentationlayer.gui import SnippyGui
+from snippy.logic.snippydb import SnippyDb
+from snippy.presentation.gui import SnippyGui
 
 DB_FILENAME = "snippy.db"
 ROOT_TITLE = "Snippy"

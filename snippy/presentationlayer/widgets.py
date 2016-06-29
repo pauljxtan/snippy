@@ -5,7 +5,7 @@ Custom widgets.
 import tkinter as tk
 from tkinter import ttk
 
-from snippy.datalayer.tabledefinitions import TABLE_STANDARD
+from snippy.data.tabledefinitions import TABLE_STANDARD
 from snippy.utils.loggingtools import get_logger
 
 class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors

@@ -14,17 +14,29 @@ SQLITE_TO_PYTHON_TYPE = {value: key for key, value
                          in PYTHON_TO_SQLITE_TYPE.items()}
 
 def python_to_sqlite_type(dtype):
-    """Converts a Python datatype to a SQLite datatype."""
+    """
+    Converts a Python datatype to a SQLite datatype.
+    :param dtype: Python datatype
+    :type dtype: type
+    """
     return PYTHON_TO_SQLITE_TYPE[dtype]
 
 def sqlite_to_python_type(sqlite_dtype):
-    """Converts a SQLite datatype to a Python datatype."""
+    """
+    Converts a SQLite datatype to a Python datatype.
+    :param sqlite_dtype: SQLite datatype
+    :type sqlite_dtype: str
+    """
     return SQLITE_TO_PYTHON_TYPE[sqlite_dtype]
 
 class Sqlite:
     @classmethod
     def get_db_connection(cls, db_name):
-        """Returns a database connection."""
+        """
+        Returns a database connection.
+        :param db_name: Database name
+        :type db_name: str
+        """
         logger = get_logger('sqlite', logging.DEBUG)
         conn = sqlite3.connect(db_name)
         conn.row_factory = sqlite3.Row
@@ -33,7 +45,15 @@ class Sqlite:
 
     @classmethod
     def execute_sql(cls, db_conn, sql, args=None):
-        """Executes the given SQL."""
+        """
+        Executes the given SQL.
+        :param db_conn: Database connection
+        :type db_conn: sqlite3.Connection
+        :param sql: SQL statement(s)
+        :type sql: str
+        :param args: Named parameters for SQL statement(s)
+        :type args: dict
+        """
         logger = get_logger('sqlite', logging.DEBUG)
         cursor = db_conn.cursor()
         if args:
