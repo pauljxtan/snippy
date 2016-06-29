@@ -27,13 +27,13 @@
     <Compile Include="snippy\data\tabledefinitions.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\logiclayer\snippydb.py">
+    <Compile Include="snippy\logic\snippydb.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\logiclayer\tablecontroller.py">
+    <Compile Include="snippy\logic\tablecontroller.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\logiclayer\snippydb1.py" />
+    <Compile Include="snippy\logic\snippydb1.py" />
     <Compile Include="snippy\data\sqlite.py">
       <SubType>Code</SubType>
     </Compile>
@@ -43,13 +43,13 @@
     <Compile Include="snippy\data\dbtypes.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\logiclayer\__init__.py">
+    <Compile Include="snippy\logic\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\gui.py">
+    <Compile Include="snippy\presentation\gui.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\__init__.py">
+    <Compile Include="snippy\presentation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\testing2.py">
@@ -58,7 +58,7 @@
     <Compile Include="snippy\utils\errors.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\forms.py">
+    <Compile Include="snippy\presentation\forms.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\utils\logformats.py">
@@ -67,7 +67,7 @@
     <Compile Include="snippy\utils\logging1.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\menus.py">
+    <Compile Include="snippy\presentation\menus.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\data\sqlgenerator.py">
@@ -85,14 +85,14 @@
     <Compile Include="snippy\utils\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentationlayer\widgets.py" />
+    <Compile Include="snippy\presentation\widgets.py" />
     <Compile Include="snippy\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="snippy\" />
     <Folder Include="snippy\data\" />
-    <Folder Include="snippy\logiclayer\" />
-    <Folder Include="snippy\presentationlayer\" />
+    <Folder Include="snippy\logic\" />
+    <Folder Include="snippy\presentation\" />
     <Folder Include="snippy\utils\" />
   </ItemGroup>
   <ItemGroup>
