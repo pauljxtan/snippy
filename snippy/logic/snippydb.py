@@ -35,45 +35,52 @@ class SnippyDb:
     def __del__(self):
         self._db_conn.close()
 
-    def query_all(self):
-        return self._table_ctlr.query_all_rows()
+    def get_all_snippets(self):
+        rows = self._table_ctlr.query_all_rows()
+        return self._get_snippets_from_rows(rows)
 
-    def query_by_creation_date(self, creation_date):
+    def get_snippets_by_creation_date(self, creation_date):
         """
         :param creation_date: Snippet creation date
         :type creation_date: datetime.datetime
         """
-        return self._table_ctlr.query_row_by_value('creation_date',
+        rows = self._table_ctlr.query_row_by_value('creation_date',
                                                    creation_date)
+        return self._get_snippets_from_rows(rows)
 
-    def query_by_snippet_type(self, snippet_type):
+    def get_snippets_by_snippet_type(self, snippet_type):
         """
         :param snippet_type: Snippet type
         :type snippet_type: str
         """
-        return self._table_ctlr.query_row_by_value('snippet_type',
+        rows = self._table_ctlr.query_row_by_value('snippet_type',
                                                    snippet_type)
+        return self._get_snippets_from_rows(rows)
 
-    def query_by_language(self, language):
+    def get_snippets_by_language(self, language):
         """
         :param language: Snippet programming language
         :type language: str
         """
-        return self._table_ctlr.query_row_by_value('language', language)
+        rows = self._table_ctlr.query_row_by_value('language', language)
+        return self._get_snippets_from_rows(rows)
 
-    def query_by_title(self, title):
+
+    def get_snippets_by_title(self, title):
         """
         :param title: Snippet title
         :type title: str
         """
-        return self._table_ctlr.query_row_by_value('title', title)
+        rows = self._table_ctlr.query_row_by_value('title', title)
+        return self._get_snippets_from_rows(rows)
 
-    def query_by_rowid(self, rowid):
+    def get_snippets_by_rowid(self, rowid):
         """
         :param rowid: Table row ID
         :type rowid: int
         """
-        return self._table_ctlr.query_row_by_value('rowid', rowid)
+        rows = self._table_ctlr.query_row_by_value('rowid', rowid)
+        return self._get_snippets_from_rows(rows)
 
     def insert_snippet(self, snippet):
         """
@@ -108,3 +115,10 @@ class SnippyDb:
                 'language': snippet.lang,
                 'title': snippet.title,
                 'code': snippet.code}
+
+    def _get_snippet_from_row(self, row):
+        return Snippet(row['creation_date'], row['snippet_type'],
+                       row['language'], row['title'], row['code'])
+
+    def _get_snippets_from_rows(self, rows):
+        return [self._get_snippet_from_row(row) for row in rows]

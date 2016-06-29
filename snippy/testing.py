@@ -56,8 +56,8 @@ snippet2 = Snippet(datetime.datetime.now(), "function", "Python", "Simple hello 
 
 db = SnippyDB("snippy.db")
 db.insert_snippet(snippet)
-print(db.query_all())
+print(db.get_all_snippets())
 db.insert_snippet(snippet2)
 db.insert_snippet(snippet2)
-print(db.query_all())
-print(db.query_by_title("Simple hello world"))
+print(db.get_all_snippets())
+print(db.get_snippets_by_title("Simple hello world"))

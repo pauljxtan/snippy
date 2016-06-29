@@ -14,9 +14,9 @@ class SnippyGui(ttk.Frame):
     def __init__(self, parent, db, verbose=False):
         """
         :param parent: Parent widget
-        :type parent: TKinter.Widget
+        :type parent: Tkinter.Widget
         :param db: Database/table controller
-        :type db: snippy.tablecontroller.TableController
+        :type db: snippy.logic.tablecontroller.TableController
         """
         ttk.Frame.__init__(self)
         self.parent = parent
@@ -67,7 +67,7 @@ class SnippyGui(ttk.Frame):
 
     #==== Database operations
     def get_all_snippets(self):
-        return self._db.query_all()
+        return self._db.get_all_snippets()
 
     def get_snippet_by_rowid(self, rowid):
         return self._db.query_by_rowid(rowid)
