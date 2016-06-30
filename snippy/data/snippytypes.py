@@ -1,19 +1,19 @@
 # TODO: Use enum for language?
 class Snippet:
-    def __init__(self, creation_date, snippet_type, language, title, code):
-        """
-        :param creation_date: Creation date
-        :type creation_date: datetime.datetime
-        :param snippet_type: Snippet type
-        :type snippet_type: str
-        :param language: Programming language
-        :type language: str
-        :param title: Title
-        :type title: str
-        :param code: Code
-        :type code: str
-        """
+    """Represents a code snippet.
 
+    :param creation_date: Creation date
+    :type creation_date: datetime.datetime
+    :param snippet_type: Snippet type
+    :type snippet_type: str
+    :param language: Programming language
+    :type language: str
+    :param title: Title
+    :type title: str
+    :param code: Code
+    :type code: str
+    """
+    def __init__(self, creation_date, snippet_type, language, title, code):
         self.cdate = creation_date
         self.stype = snippet_type
         self.lang = language

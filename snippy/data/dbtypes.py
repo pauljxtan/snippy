@@ -3,13 +3,14 @@ Database types.
 """
 
 class Table:
+    """Represents a database table.
+
+    :param name: Table name
+    :type name: str
+    :param schema: Table schema
+    :type schema: snippy.data.dbtypes.Schema
+    """
     def __init__(self, name, schema):
-        """
-        :param name: Table name
-        :type name: str
-        :param schema: Table schema
-        :type schema: snippy.data.dbtypes.Schema
-        """
         self.name = name
         self.schema = schema
 
@@ -17,11 +18,12 @@ class Table:
         return self.name == other.name and self.schema == other.schema
 
 class Schema:
+    """Represents the schema of a database table.
+
+    :param columns: Columns in schema
+    :type columns: list(snippy.data.dbtypes.Column)
+    """
     def __init__(self, columns):
-        """
-        :param columns: Columns in schema
-        :type columns: list(snippy.data.dbtypes.Column)
-        """
         self.columns = columns
 
     def __eq__(self, other):
@@ -35,23 +37,16 @@ class Schema:
         return [column.dtype for column in self.columns]
 
 class Column:
+    """Represents a column in the schema of a database table.
+
+    :param name: Column name
+    :type name: str
+    :param dtype: Column datatype
+    :type dtype: type
+    """
     def __init__(self, name, dtype):
-        """
-        :param name: Column name
-        :type name: str
-        :param dtype: Column datatype
-        :type name: type
-        """
         self.name = name
         self.dtype = dtype
 
     def __eq__(self, other):
         return self.name == other.name and self.dtype == other.dtype
-
-#class Row:
-#    def __init__(self, schema, values):
-#        self.schema = schema
-#        self.values = values
-
-#    def get_column_names(self):
-#        return self.schema.get_column_names()
