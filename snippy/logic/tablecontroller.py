@@ -36,6 +36,7 @@ class TableController:
         """
         sql = self._sql_gen.get_insert_row_sql()
         Sqlite.execute_sql(self._db_conn, sql, row)
+        # TODO: get row id from insert
         self._logger.info("Inserted row [...]")
 
     def update_row(self, rowid, row):
@@ -46,18 +47,18 @@ class TableController:
         :type row: dict(column name, value)
         """
         row['rowid'] = rowid
-        sql = self._sql_gen.get_update_row_sql(row)
+        sql = self._sql_gen.get_update_row_sql()
         Sqlite.execute_sql(self._db_conn, sql, row)
-        self._logger.info("Updated row [...]")
+        self._logger.info("Updated row {0}".format(rowid))
 
     def delete_row(self, rowid):
         """
         :param rowid: Table row ID
         :type rowid: int
         """
-        sql = self._sql_gen.get_delete_row_sql({'rowid': rowid})
-        Sqlite.execute_sql(self._db_conn, sql, rowid)
-        self._logger.info("Deleted row [...]")
+        sql = self._sql_gen.get_delete_row_sql()
+        Sqlite.execute_sql(self._db_conn, sql, {'rowid': rowid})
+        self._logger.info("Deleted row {0}".format(rowid))
 
     def query_all_rows(self):
         sql = self._sql_gen.get_query_all_rows_sql()

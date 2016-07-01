@@ -1,5 +1,7 @@
+import datetime
 import tkinter as tk
 
+from snippy.data.snippytypes import Snippet
 from snippy.logic.snippydb import SnippyDb
 from snippy.presentation.gui import SnippyGui
 

@@ -1,6 +1,8 @@
+import datetime
 import tkinter as tk
 from tkinter import ttk
 
+from snippy.data.snippytypes import Snippet
 from snippy.logic.snippydb import SnippyDb
 from snippy.presentation.widgets import DataBox, MyNotebook
 from snippy.presentation.forms import FormMaker
@@ -9,23 +11,27 @@ from snippy.presentation.menus import MenuMaker
 WELCOME_MESSAGE = ("Welcome to Snippy!\n"
                    "To get started, click on 'Create snippet' on the top menu,"
                    " or right-click on any snippet above.")
+EXAMPLE_SNIPPET = Snippet(datetime.datetime(2001, 1, 1), "Function", "Python",
+                          "Simple hello world",
+                          "def hello_world():\n    print(Hello, world!)")
 
 class SnippyGui(ttk.Frame):
+    """The main snippy GUI.
+
+    :param parent: Parent widget
+    :type parent: Tkinter.Widget
+    :param db: Database/table controller
+    :type db: snippy.logic.tablecontroller.TableController
+    """
     def __init__(self, parent, db, verbose=False):
-        """
-        :param parent: Parent widget
-        :type parent: Tkinter.Widget
-        :param db: Database/table controller
-        :type db: snippy.logic.tablecontroller.TableController
-        """
         ttk.Frame.__init__(self)
         self.parent = parent
         self._db = db
-        self.verbose = verbose
+        self._verbose = verbose
 
         self._databox = DataBox(self)
         self._databox.pack(fill=tk.BOTH, expand=True)
-        self.update_databox()
+        self._update_databox()
 
         self._notebook = MyNotebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
@@ -38,22 +44,18 @@ class SnippyGui(ttk.Frame):
 
         self.form_maker = FormMaker(self)
 
-    def update_databox(self):
+        self.insert_snippet(EXAMPLE_SNIPPET)
+
+    def _update_databox(self):
+        """Updates the databox from the database."""
         self._databox.clear_all_rows()
-        rows = self.get_all_snippets()
-        for _, row in enumerate(rows):
-            self._databox.insert_row(row)
+        snippets, rowids = self._get_all_snippets()
+        for rowid, snippet in zip(rowids, snippets):
+            values = (snippet.cdate, snippet.stype, snippet.lang,
+                      snippet.title)
+            self._databox.insert_row(rowid, values)
 
-    def _make_welcome_tab(self):
-        page = ttk.Frame(self._notebook)
-        page.pack(fill=tk.BOTH, expand=True)
-
-        label = tk.Label(page, text=WELCOME_MESSAGE)
-        label.pack(fill=tk.BOTH, expand=True)
-
-        self._notebook.add_tab(page, "Welcome!")
-
-    def show_context_menu(self, event):
+    def show_context_menu(self, event: tk.Event):
         """Displays the context menu for the selected row."""
         rowid = self._databox.tree.identify_row(event.y)
         if rowid:
@@ -66,24 +68,25 @@ class SnippyGui(ttk.Frame):
         return self._row_id_context_menu
 
     #==== Database operations
-    def get_all_snippets(self):
+    def _get_all_snippets(self):
         return self._db.get_all_snippets()
 
-    def get_snippet_by_rowid(self, rowid):
+    def get_snippet_by_rowid(self, rowid: int):
         return self._db.query_by_rowid(rowid)
 
-    def insert_snippet(self, snippet):
+    def insert_snippet(self, snippet: Snippet):
         self._db.insert_snippet(snippet)
-        self.update_databox()
+        self._update_databox()
 
-    def update_snippet(self, rowid, snippet):
+    def update_snippet(self, rowid: int, snippet: Snippet):
         self._db.update_snippet(rowid, snippet)
 
-    def delete_snippet(self, rowid):
+    def delete_snippet(self, rowid: int):
         self._db.delete_snippet(rowid)
+        self._update_databox()
 
     #==== Notebook operations
-    def add_tab(self, tab_label, tab_content, **kw):
+    def add_tab(self, tab_label: str, tab_content: tk.Widget, **kw):
         self._notebook.add_tab(tab_label, tab_content, **kw)
 
     def select_tab(self, tab_id):
@@ -92,3 +95,11 @@ class SnippyGui(ttk.Frame):
     def close_selected_tab(self):
         self._notebook.close_selected_tab()
 
+    def _make_welcome_tab(self):
+        page = ttk.Frame(self._notebook)
+        page.pack(fill=tk.BOTH, expand=True)
+
+        label = tk.Label(page, text=WELCOME_MESSAGE)
+        label.pack(fill=tk.BOTH, expand=True)
+
+        self._notebook.add_tab(page, "Welcome!")

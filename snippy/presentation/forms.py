@@ -1,6 +1,4 @@
-"""
-Snippet creation and editing forms.
-"""
+"""Forms for creating and editing snippets."""
 
 import datetime
 import tkinter as tk
@@ -8,16 +6,12 @@ from tkinter import ttk
 from snippy.data.snippytypes import Snippet
 
 class FormMaker(object):
-    """
-    Creates snippet creation and editing forms.
-    """
+    """Creates forms for creating and editing snippets."""
     def __init__(self, gui):
         self.gui = gui
 
     def make_create_form(self):
-        """
-        Returns a snippet creation form.
-        """
+        """Returns a snippet creation form."""
         form = ttk.Frame()
 
         ttk.Label(form, text="Create snippet").grid(row=0, columnspan=2)
@@ -50,9 +44,7 @@ class FormMaker(object):
         return form
 
     def make_edit_form(self, row_id):
-        """
-        Returns a snippet editing form.
-        """
+        """Returns a snippet editing form."""
         form = ttk.Frame()
 
         ttk.Label(form, text="Edit snippet").grid(row=0, columnspan=2)
@@ -68,7 +60,7 @@ class FormMaker(object):
         text_code = tk.Text(form)
 
         # Initialize with existing values
-        row = self.gui.get_row(row_id)
+        row = self.gui.get_snippet_by_rowid(row_id)
         entry_type.insert(tk.END, row[1])
         entry_lang.insert(tk.END, row[2])
         entry_title.insert(tk.END, row[3])

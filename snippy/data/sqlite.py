@@ -13,7 +13,7 @@ PYTHON_TO_SQLITE_TYPE = {
 SQLITE_TO_PYTHON_TYPE = {value: key for key, value
                          in PYTHON_TO_SQLITE_TYPE.items()}
 
-def python_to_sqlite_type(dtype):
+def python_to_sqlite_type(dtype: type):
     """
     Converts a Python datatype to a SQLite datatype.
 
@@ -22,7 +22,7 @@ def python_to_sqlite_type(dtype):
     """
     return PYTHON_TO_SQLITE_TYPE[dtype]
 
-def sqlite_to_python_type(sqlite_dtype):
+def sqlite_to_python_type(sqlite_dtype: str):
     """
     Converts a SQLite datatype to a Python datatype.
 
@@ -33,7 +33,7 @@ def sqlite_to_python_type(sqlite_dtype):
 
 class Sqlite:
     @classmethod
-    def get_db_connection(cls, db_name):
+    def get_db_connection(cls, db_name: str):
         """
         Returns a database connection.
 
@@ -47,7 +47,7 @@ class Sqlite:
         return conn
 
     @classmethod
-    def execute_sql(cls, db_conn, sql, args=None):
+    def execute_sql(cls, db_conn: sqlite3.Connection, sql: str, args=None):
         """
         Executes the given SQL.
 

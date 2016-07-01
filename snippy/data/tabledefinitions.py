@@ -3,7 +3,7 @@ from snippy.data.dbtypes import Column, Schema, Table
 
 class TableDefinition:
     """Encapsulates various properties of a database table."""
-    def __init__(self, name, columns, databox_indices=None):
+    def __init__(self, name: str, columns: list, databox_indices=None):
         """Initializes the table definition.
 
         :param name: Table name

@@ -20,7 +20,7 @@ class SnippyDb:
     :param verbose: Verbose flag
     :type verbose: bool
     """
-    def __init__(self, db_name, verbose=False):
+    def __init__(self, db_name: str, verbose=False):
         self._db_name = db_name
         self._db_conn = Sqlite.get_db_connection(db_name)
         self._table = TABLE_STANDARD.table
@@ -39,9 +39,9 @@ class SnippyDb:
     def get_all_snippets(self):
         """Returns all snippets in the database."""
         rows = self._table_ctlr.query_all_rows()
-        return self._get_snippets_from_rows(rows)
+        return self._get_snippets_from_rows(rows), [row['rowid'] for row in rows]
 
-    def get_snippets_by_creation_date(self, creation_date):
+    def get_snippets_by_creation_date(self, creation_date: datetime.datetime):
         """Returns all snippets with the given creation date.
 
         :param creation_date: Snippet creation date
@@ -51,7 +51,7 @@ class SnippyDb:
                                                    creation_date)
         return self._get_snippets_from_rows(rows)
 
-    def get_snippets_by_snippet_type(self, snippet_type):
+    def get_snippets_by_snippet_type(self, snippet_type: str):
         """Returns all snippets of the given type.
 
         :param snippet_type: Snippet type
@@ -61,7 +61,7 @@ class SnippyDb:
                                                    snippet_type)
         return self._get_snippets_from_rows(rows)
 
-    def get_snippets_by_language(self, language):
+    def get_snippets_by_language(self, language: str):
         """Returns all snippets in the given programming language.
 
         :param language: Snippet programming language
@@ -71,7 +71,7 @@ class SnippyDb:
         return self._get_snippets_from_rows(rows)
 
 
-    def get_snippets_by_title(self, title):
+    def get_snippets_by_title(self, title: str):
         """Returns all snippets with the given title.
 
         :param title: Snippet title
@@ -80,7 +80,7 @@ class SnippyDb:
         rows = self._table_ctlr.query_row_by_value('title', title)
         return self._get_snippets_from_rows(rows)
 
-    def get_snippets_by_rowid(self, rowid):
+    def get_snippets_by_rowid(self, rowid: int):
         """Returns all snippets with the given row ID.
 
         :param rowid: Table row ID
@@ -89,7 +89,7 @@ class SnippyDb:
         rows = self._table_ctlr.query_row_by_value('rowid', rowid)
         return self._get_snippets_from_rows(rows)
 
-    def insert_snippet(self, snippet):
+    def insert_snippet(self, snippet: Snippet):
         """Inserts a snippet into the database.
 
         :param snippet: Snippet
@@ -97,7 +97,7 @@ class SnippyDb:
         """
         self._table_ctlr.insert_row(self._get_row_from_snippet(snippet))
 
-    def update_snippet(self, rowid, snippet):
+    def update_snippet(self, rowid: int, snippet: Snippet):
         """Updates a snippet in the database.
 
         :param rowid: Table row ID
@@ -107,7 +107,7 @@ class SnippyDb:
         """
         self._table_ctlr.update_row(rowid, self._get_row_from_snippet(snippet))
 
-    def delete_snippet(self, rowid):
+    def delete_snippet(self, rowid: int):
         """Deletes a snippet from the database.
 
         :param rowid: Table row ID
@@ -115,16 +115,16 @@ class SnippyDb:
         """
         self._table_ctlr.delete_row(rowid)
 
-    def _get_row_from_snippet(self, snippet):
+    def _get_row_from_snippet(self, snippet: Snippet):
         return {'creation_date': snippet.cdate,
                 'snippet_type': snippet.stype,
                 'language': snippet.lang,
                 'title': snippet.title,
                 'code': snippet.code}
 
-    def _get_snippet_from_row(self, row):
+    def _get_snippet_from_row(self, row: dict):
         return Snippet(row['creation_date'], row['snippet_type'],
                        row['language'], row['title'], row['code'])
 
-    def _get_snippets_from_rows(self, rows):
+    def _get_snippets_from_rows(self, rows: list):
         return [self._get_snippet_from_row(row) for row in rows]

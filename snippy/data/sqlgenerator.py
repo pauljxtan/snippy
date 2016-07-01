@@ -2,12 +2,13 @@
 SQL generators.
 """
 import logging
-from snippy.utils.loggingtools import get_logger
+from snippy.data.dbtypes import Schema, Table
 from snippy.data.sqlite import python_to_sqlite_type
+from snippy.utils.loggingtools import get_logger
 
 class SqlGenerator:
     """A SQL generator for standard database operations."""
-    def __init__(self, table):
+    def __init__(self, table: Table):
         """Initializes a SQL generator for a given table.
 
         :param table: Database table
@@ -44,14 +45,14 @@ class SqlGenerator:
         """Returns the SQL for updating a row in the table."""
         cols = self._table.schema.get_column_names()
         sql = ("UPDATE {0} SET ".format(self._table.name))
-        sql += ", ".join([":{0} = ?".format(col) for col in cols])
-        sql += "WHERE :rowid = ?"
+        sql += ", ".join(["{0} = :{0}".format(col) for col in cols])
+        sql += "WHERE rowid = :rowid"
         self._logger.debug("SQL: {0}".format(sql))
         return sql
 
     def get_delete_row_sql(self):
         """Returns the SQL for deleting a row in the table."""
-        sql = "DELETE FROM {0} WHERE :rowid = ?".format(self._table.name)
+        sql = "DELETE FROM {0} WHERE rowid = :rowid".format(self._table.name)
         self._logger.debug("SQL: {0}".format(sql))
         return sql
 
@@ -61,7 +62,7 @@ class SqlGenerator:
         self._logger.debug("SQL: {0}".format(sql))
         return sql
 
-    def get_query_row_by_value_sql(self, column_name, value):
+    def get_query_row_by_value_sql(self, column_name: str, value):
         """Returns the SQL for querying rows with a given column value.
 
         :param column_name: Column name
@@ -80,7 +81,7 @@ class SqlGenerator:
         self._logger.debug("SQL: {0}".format(sql))
         return sql
 
-    def _get_format_schema_sql(self, schema):
+    def _get_format_schema_sql(self, schema: Schema):
         sql = "("
         for col in schema.columns[:-1]:
             sql += "{0} {1}, ".format(col.name,

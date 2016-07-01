@@ -1,4 +1,9 @@
-# TODO: Use enum for language?
+import datetime
+import enum
+
+class Language(enum.Enum):
+    Python = 0
+
 class Snippet:
     """Represents a code snippet.
 
@@ -13,7 +18,8 @@ class Snippet:
     :param code: Code
     :type code: str
     """
-    def __init__(self, creation_date, snippet_type, language, title, code):
+    def __init__(self, creation_date: datetime.datetime, snippet_type: str,
+                 language: str, title: str, code: str):
         self.cdate = creation_date
         self.stype = snippet_type
         self.lang = language
