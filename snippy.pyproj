@@ -58,16 +58,10 @@
     <Compile Include="snippy\utils\errors.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentation\forms.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="snippy\obsolete\logformats.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\obsolete\logging1.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="snippy\presentation\menus.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\data\sqlgenerator.py">
@@ -85,7 +79,6 @@
     <Compile Include="snippy\utils\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\presentation\widgets.py" />
     <Compile Include="snippy\__init__.py" />
   </ItemGroup>
   <ItemGroup>
