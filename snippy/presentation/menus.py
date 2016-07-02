@@ -1,21 +1,20 @@
-"""
-The menubar and context menus.
-"""
+"""The menubar and context menus."""
 
 import tkinter as tk
 from tkinter import messagebox
+from snippy.presentation.gui import SnippyGui
 
 class MenuMaker(object):
+    """Creates the menubar and context menus.
+    
+    :param gui: Snippy GUI instance
+    :type gui: snippy.presentation.gui.SnippyGui
     """
-    Creates the menubar and context menus.
-    """
-    def __init__(self, gui):
+    def __init__(self, gui: SnippyGui):
         self.gui = gui
 
     def make_menubar(self):
-        """
-        Returns a menubar.
-        """
+        """Returns a menubar."""
         def _exit():
             self.gui.parent.quit()
 
@@ -35,9 +34,7 @@ class MenuMaker(object):
         return menubar
 
     def make_context_menu(self):
-        """
-        Returns a context menu.
-        """
+        """Returns a context menu."""
         def _show_edit_form():
             form = self.gui.form_maker.make_edit_form(
                 self.gui.get_row_id_context_menu())

@@ -3,17 +3,24 @@
 import tkinter as tk
 from tkinter import ttk
 
-from snippy.data.tabledefinitions import TABLE_STANDARD
+from snippy.data.tabledefinitions import TABLE_STANDARD, TableDefinition
 from snippy.utils.loggingtools import get_logger
+from snippy.presentation.gui import SnippyGui
+from collections.abc import Iterable
 
 MODULE_NAME = "widgets"
 
 class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
+    """A wrapper around ttk.Treeview for displaying data.
+    
+    :param gui: Snippy GUI instance
+    :type gui: snippy.presentation.gui.SnippyGui
+    :param table_definition: Table definition
+    :type table_definition: snippy.data.tabledefinitions.TableDefinition
     """
-    A wrapper around ttk.Treeview for displaying data.
-    """
-    def __init__(self, parent, table_definition=TABLE_STANDARD):
-        ttk.Frame.__init__(self, parent)
+    def __init__(self, gui: SnippyGui,
+                 table_definition: TableDefinition = TABLE_STANDARD):
+        ttk.Frame.__init__(self, gui)
         self._logger = get_logger(MODULE_NAME)
 
         self.tree = ttk.Treeview(self,
@@ -22,7 +29,7 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
                                  table_definition.col_names_display_databox):
             self.tree.heading(column, text=title)
         self.tree.pack(fill=tk.BOTH, expand=True)
-        self.tree.bind('<Button-3>', parent.show_context_menu)
+        self.tree.bind('<Button-3>', gui.show_context_menu)
 
         scrollbar_x = ttk.Scrollbar(self.tree, orient=tk.HORIZONTAL,
                                     command=self.tree.xview)
@@ -32,8 +39,14 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
         scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
 
-    def insert_row(self, iid, values):
-        """Inserts a row into the tree."""
+    def insert_row(self, iid: int, values: Iterable):
+        """Inserts a row into the tree.
+        
+        :param iid: Row ID
+        :type iid: int
+        :param values: Row values
+        :type values: list
+        """
         try:
             self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
         except tk.TclError as e:
@@ -45,7 +58,7 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
 
 class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
     """A small wrapper around ttk.Notebook with a context menu."""
-    def __init__(self, parent, **kw):
+    def __init__(self, parent: tk.Widget, **kw):
         """
         :param parent: The parent widget
         :type parent: tkinter.Widget
@@ -59,7 +72,7 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         self._context_menu = self._make_context_menu()
         self._notebook.bind('<Button-3>', self._on_right_click)
 
-    def add_tab(self, tab_content, tab_label, **kw):
+    def add_tab(self, tab_content: tk.Widget, tab_label: int, **kw):
         """Adds a new tab to the notebook.
 
         :param tab_content: Content to put in the tab (typically a Frame)
@@ -80,13 +93,13 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
         menu.add_command(label="Close tab", command=_close_tab_right_clicked)
         return menu
 
-    def _on_right_click(self, event):
+    def _on_right_click(self, event: tk.Event):
         if event.widget.identify(event.x, event.y) == 'label':
             index = event.widget.index('@%d,%d' % (event.x, event.y))
             self._index_right_clicked = index
             self._context_menu.post(event.x_root, event.y_root)
 
-    def select(self, tab_id):
+    def select(self, tab_id: int):
         """Selects a tab."""
         self._notebook.select(tab_id)
 

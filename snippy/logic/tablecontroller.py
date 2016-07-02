@@ -1,10 +1,13 @@
 import logging
+from sqlite3 import Connection
+from typing import Any, Mapping
+from snippy.data.dbtypes import Table
 from snippy.data.sqlgenerator import SqlGenerator
 from snippy.data.sqlite import Sqlite
 from snippy.utils.loggingtools import get_logger
 
 class TableController:
-    def __init__(self, db_conn, table):
+    def __init__(self, db_conn: Connection, table: Table):
         """
         :param db_conn: Database connection
         :type db_conn: sqlite3.Connection
@@ -16,7 +19,7 @@ class TableController:
         self._sql_gen = SqlGenerator(table)
         self._logger = get_logger('tablecontroller', logging.DEBUG)
 
-    def create_table(self, clobber=False):
+    def create_table(self, clobber: bool = False):
         """
         :param clobber: Flag indicating to overwrite existing table
         :type clobber: bool
@@ -29,29 +32,29 @@ class TableController:
         Sqlite.execute_sql(self._db_conn, sql)
         self._logger.info("Created table {0}".format(self._table.name))
 
-    def insert_row(self, row):
+    def insert_row(self, row: Mapping[str, Any]):
         """
         :param row: Table row
-        :type row: dict(column name, value)
+        :type row: dict(str, [column datatype])
         """
         sql = self._sql_gen.get_insert_row_sql()
         Sqlite.execute_sql(self._db_conn, sql, row)
         # TODO: get row id from insert
         self._logger.info("Inserted row [...]")
 
-    def update_row(self, rowid, row):
+    def update_row(self, rowid: int, row: Mapping[str, Any]):
         """
         :param rowid: Table row ID
         :type rowid: int
         :param row: Table row
-        :type row: dict(column name, value)
+        :type row: dict(str, [column datatype])
         """
         row['rowid'] = rowid
         sql = self._sql_gen.get_update_row_sql()
         Sqlite.execute_sql(self._db_conn, sql, row)
         self._logger.info("Updated row {0}".format(rowid))
 
-    def delete_row(self, rowid):
+    def delete_row(self, rowid: int):
         """
         :param rowid: Table row ID
         :type rowid: int
@@ -66,7 +69,7 @@ class TableController:
         self._logger.info("Queried all rows")
         return queryResults
 
-    def query_row_by_value(self, column_name, value):
+    def query_row_by_value(self, column_name: str, value: Any):
         """
         :param column_name: Column name
         :type column_name: str

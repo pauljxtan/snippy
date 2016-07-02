@@ -4,10 +4,11 @@ import datetime
 import tkinter as tk
 from tkinter import ttk
 from snippy.data.snippytypes import Snippet
+from snippy.presentation.gui import SnippyGui
 
 class FormMaker(object):
     """Creates forms for creating and editing snippets."""
-    def __init__(self, gui):
+    def __init__(self, gui: SnippyGui):
         self.gui = gui
 
     def make_create_form(self):
@@ -43,7 +44,7 @@ class FormMaker(object):
 
         return form
 
-    def make_edit_form(self, row_id):
+    def make_edit_form(self, row_id: int):
         """Returns a snippet editing form."""
         form = ttk.Frame()
 

@@ -14,9 +14,9 @@ def center(win):
     center_y = (win.winfo_screenheight() // 2) - (height // 2)
     win.geometry('{}x{}+{}+{}'.format(width, height, center_x, center_y))
 
-def is_list_of(obj, dtype):
+def is_list_of(obj: object, dtype: type):
     return ((isinstance(obj, list) or isinstance(obj, tuple))
             and all([isinstance(elem, dtype) for elem in obj]))
 
-def is_list_or_tuple(obj):
+def is_list_or_tuple(obj: object):
     return isinstance(obj, list) or isinstance(obj, tuple)

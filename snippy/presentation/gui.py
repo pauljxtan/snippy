@@ -4,9 +4,9 @@ from tkinter import ttk
 
 from snippy.data.snippytypes import Snippet
 from snippy.logic.snippydb import SnippyDb
-from snippy.presentation.widgets import DataBox, MyNotebook
 from snippy.presentation.forms import FormMaker
 from snippy.presentation.menus import MenuMaker
+from snippy.presentation.widgets import DataBox, MyNotebook
 
 WELCOME_MESSAGE = ("Welcome to Snippy!\n"
                    "To get started, click on 'Create snippet' on the top menu,"
@@ -23,7 +23,7 @@ class SnippyGui(ttk.Frame):
     :param db: Database/table controller
     :type db: snippy.logic.tablecontroller.TableController
     """
-    def __init__(self, parent, db, verbose=False):
+    def __init__(self, parent: tk.Widget, db: SnippyDb, verbose=False):
         ttk.Frame.__init__(self)
         self.parent = parent
         self._db = db
@@ -89,7 +89,7 @@ class SnippyGui(ttk.Frame):
     def add_tab(self, tab_label: str, tab_content: tk.Widget, **kw):
         self._notebook.add_tab(tab_label, tab_content, **kw)
 
-    def select_tab(self, tab_id):
+    def select_tab(self, tab_id: int):
         self._notebook.select(tab_id)
 
     def close_selected_tab(self):
