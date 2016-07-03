@@ -1,5 +1,6 @@
-"""The database table controller."""
-
+"""
+The database table controller.
+"""
 import logging
 from sqlite3 import Connection
 from typing import Any, Mapping
@@ -7,6 +8,7 @@ from snippy.data.dbtypes import Table
 from snippy.data.sqlgenerator import SqlGenerator
 from snippy.data.sqlite import Sqlite
 from snippy.utils.loggingtools import get_logger
+
 
 class TableController:
     """Controls data access and manipulation for a given table.
@@ -90,9 +92,9 @@ class TableController:
         self._logger.info("Queried rows with %s = %s", column_name, value)
         return query_results
 
-    #def table_exists(self, table_name):
-    #    sql = ("SELECT name FROM sqlite_master "
-    #           "WHERE type = 'table' AND name = 'table_name';")
-    #    table_names = Sqlite.execute_sql(self._db_conn, sql)
-    #    print table_names
-    #    return table_name in table_names
+    # def table_exists(self, table_name):
+    #     sql = ("SELECT name FROM sqlite_master "
+    #            "WHERE type = 'table' AND name = 'table_name';")
+    #     table_names = Sqlite.execute_sql(self._db_conn, sql)
+    #     print table_names
+    #     return table_name in table_names

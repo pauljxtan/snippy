@@ -6,6 +6,7 @@ from snippy.data.dbtypes import Schema, Table
 from snippy.data.sqlite import python_to_sqlite_type
 from snippy.utils.loggingtools import get_logger
 
+
 class SqlGenerator:
     """A SQL generator for standard database operations."""
     def __init__(self, table: Table):

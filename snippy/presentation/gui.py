@@ -1,11 +1,11 @@
-"""The Snippy GUI."""
-
+"""
+The Snippy GUI.
+"""
 from collections.abc import Iterable
 import datetime
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-
 from snippy.data.snippytypes import Snippet
 from snippy.data.tabledefinitions import TABLE_STANDARD, TableDefinition
 from snippy.logic.snippydb import SnippyDb
@@ -20,7 +20,8 @@ EXAMPLE_SNIPPET = Snippet(datetime.datetime(2001, 1, 1), "Function", "Python",
                           "Simple hello world",
                           "def hello_world():\n    print(Hello, world!)")
 
-class SnippyGui(ttk.Frame): # pylint: disable=too-many-ancestors,too-many-instance-attributes
+
+class SnippyGui(ttk.Frame):
     """The main snippy GUI.
 
     :param parent: Parent widget
@@ -72,7 +73,8 @@ class SnippyGui(ttk.Frame): # pylint: disable=too-many-ancestors,too-many-instan
         """Returns the row id for which to display the context menu."""
         return self._row_id_context_menu
 
-    #==== Database operations
+    # ==== Database operations
+
     def _get_all_snippets(self):
         return self._db.get_all_snippets()
 
@@ -94,7 +96,7 @@ class SnippyGui(ttk.Frame): # pylint: disable=too-many-ancestors,too-many-instan
         self._db.delete_snippet(rowid)
         self._update_databox()
 
-    #==== Notebook operations
+    # ==== Notebook operations
     def add_tab(self, tab_label: str, tab_content: tk.Widget, **kw):
         """Adds a tab to the notebook."""
         self._notebook.add_tab(tab_label, tab_content, **kw)
@@ -116,7 +118,8 @@ class SnippyGui(ttk.Frame): # pylint: disable=too-many-ancestors,too-many-instan
 
         self._notebook.add_tab(page, "Welcome!")
 
-class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
+
+class DataBox(ttk.Frame):
     """A wrapper around ttk.Treeview for displaying data.
 
     :param gui: Snippy GUI instance
@@ -162,7 +165,8 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         """Deletes all rows in the tree."""
         self.tree.delete(*self.tree.get_children())
 
-class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
+
+class MyNotebook(ttk.Frame):
     """A small wrapper around ttk.Notebook with a context menu.
 
     :param parent: The parent widget
@@ -212,6 +216,7 @@ class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
     def close_selected_tab(self):
         """Closes the selected tab."""
         self._notebook.forget(self._notebook.select())
+
 
 class FormMaker(object):
     """Creates forms for creating and editing snippets."""
@@ -288,6 +293,7 @@ class FormMaker(object):
             row=5, columnspan=2)
 
         return form
+
 
 class MenuMaker(object):
     """Creates the menubar and context menus.

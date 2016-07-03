@@ -1,9 +1,11 @@
-"""Sqlite data access."""
-
+"""
+Sqlite data access.
+"""
 import datetime
 import logging
 import sqlite3
 from snippy.utils.loggingtools import get_logger
+
 
 # TODO: probably better to use built-in conversions
 
@@ -15,6 +17,7 @@ PYTHON_TO_SQLITE_TYPE = {
 SQLITE_TO_PYTHON_TYPE = {value: key for key, value
                          in PYTHON_TO_SQLITE_TYPE.items()}
 
+
 def python_to_sqlite_type(dtype: type):
     """
     Converts a Python datatype to a SQLite datatype.
@@ -24,6 +27,7 @@ def python_to_sqlite_type(dtype: type):
     """
     return PYTHON_TO_SQLITE_TYPE[dtype]
 
+
 def sqlite_to_python_type(sqlite_dtype: str):
     """
     Converts a SQLite datatype to a Python datatype.
@@ -32,6 +36,7 @@ def sqlite_to_python_type(sqlite_dtype: str):
     :type sqlite_dtype: str
     """
     return SQLITE_TO_PYTHON_TYPE[sqlite_dtype]
+
 
 class Sqlite:
     """Sqlite database access."""

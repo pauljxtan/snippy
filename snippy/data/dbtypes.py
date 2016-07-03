@@ -1,8 +1,10 @@
-"""Database types."""
-
+"""
+Database types.
+"""
 from typing import Iterable
 
-class Column: # pylint: disable=too-few-public-methods
+
+class Column:
     """Represents a column in the schema of a database table.
 
     :param name: Column name
@@ -16,6 +18,7 @@ class Column: # pylint: disable=too-few-public-methods
 
     def __eq__(self, other):
         return self.name == other.name and self.dtype == other.dtype
+
 
 class Schema:
     """Represents the schema of a database table.
@@ -38,7 +41,8 @@ class Schema:
         """Returns the column datatypes."""
         return [column.dtype for column in self.columns]
 
-class Table: # pylint: disable=too-few-public-methods
+
+class Table:
     """Represents a database table.
 
     :param name: Table name

@@ -1,7 +1,10 @@
-"""Snippy types."""
+"""
+Snippy types.
+"""
 from datetime import datetime
 
-class Snippet: # pylint: disable=too-few-public-methods
+
+class Snippet:
     """Represents a code snippet.
 
     :param creation_date: Creation date
@@ -15,7 +18,6 @@ class Snippet: # pylint: disable=too-few-public-methods
     :param code: Code
     :type code: str
     """
-    # pylint: disable=too-many-arguments
     def __init__(self, creation_date: datetime, snippet_type: str,
                  language: str, title: str, code: str):
         self.cdate = creation_date

@@ -1,7 +1,9 @@
-"""Database table definitions."""
-
+"""
+Database table definitions.
+"""
 import datetime
 from snippy.data.dbtypes import Column, Schema, Table
+
 
 class TableDefinition:
     """Encapsulates various properties of a database table."""

@@ -1,5 +1,6 @@
-"""Logging tools."""
-
+"""
+Logging tools.
+"""
 import datetime
 import glob
 import logging
@@ -11,6 +12,7 @@ LOG_FORMAT_STANDARD = ("%(asctime)s %(levelname)s: "
                        "%(message)s")
 TIME_FORMAT_STANDARD = "%Y-%m-%d %H:%M:%S"
 LOG_DIR = os.path.join("snippy", "logs")
+
 
 def get_logger(name, level: int=logging.INFO, filename: str=None,
                message_format: str=LOG_FORMAT_STANDARD,
@@ -46,7 +48,9 @@ def get_logger(name, level: int=logging.INFO, filename: str=None,
 
     return logger
 
-def cleanup_logs(retention_days: int=30, file_exts: Iterable(Generic(str))=(".log", )):
+
+def cleanup_logs(retention_days: int=30,
+                 file_exts: Iterable(Generic(str))=(".log", )):
     """Clean up log files for a given retention period.
 
     :param retention_days: Days to retain log files
@@ -66,9 +70,11 @@ def cleanup_logs(retention_days: int=30, file_exts: Iterable(Generic(str))=(".lo
             os.remove(filepath)
             logger.debug("Removed %s", filepath)
 
+
 def _get_date_from_filepath(filepath):
     return (datetime.datetime.strptime(_get_datestamp_from_filepath(filepath),
                                        "%Y%m%d"))
+
 
 def _get_datestamp_from_filepath(filepath):
     return filepath[-10:-4]

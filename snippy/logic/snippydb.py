@@ -1,5 +1,6 @@
-"""The Snippy database."""
-
+"""
+The Snippy database.
+"""
 import datetime
 from snippy.data.snippytypes import Snippet
 from snippy.data.sqlite import Sqlite
@@ -14,6 +15,7 @@ EXAMPLE_SNIPPET = {
     'title': "Prints hello world",
     'code':  "def hello_world():\n    print \"Hello, world!\""
 }
+
 
 class SnippyDb:
     """Encapsulates a snippy database.
@@ -72,7 +74,6 @@ class SnippyDb:
         """
         rows = self._table_ctlr.query_row_by_value('language', language)
         return get_snippets_from_rows(rows)
-
 
     def get_snippets_by_title(self, title: str):
         """Returns all snippets with the given title.

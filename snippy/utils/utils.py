@@ -1,5 +1,8 @@
-"""Utility functions."""
+"""
+Utility functions.
+"""
 from snippy.data.snippytypes import Snippet
+
 
 def center(win):
     """
@@ -13,6 +16,7 @@ def center(win):
     center_y = (win.winfo_screenheight() // 2) - (height // 2)
     win.geometry('{}x{}+{}+{}'.format(width, height, center_x, center_y))
 
+
 def get_row_from_snippet(snippet: Snippet):
     """Converts a Snippet instance to a row dict."""
     return {'creation_date': snippet.cdate,
@@ -21,10 +25,12 @@ def get_row_from_snippet(snippet: Snippet):
             'title': snippet.title,
             'code': snippet.code}
 
+
 def get_snippet_from_row(row: dict):
     """Converts a row dict to a Snippet instance."""
     return Snippet(row['creation_date'], row['snippet_type'],
                    row['language'], row['title'], row['code'])
+
 
 def get_snippets_from_rows(rows: list):
     """Converts a list of row dicts to a list of Snippet instances."""
