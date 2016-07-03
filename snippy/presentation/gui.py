@@ -1,3 +1,5 @@
+"""The Snippy GUI."""
+
 from collections.abc import Iterable
 import datetime
 import tkinter as tk
@@ -18,7 +20,7 @@ EXAMPLE_SNIPPET = Snippet(datetime.datetime(2001, 1, 1), "Function", "Python",
                           "Simple hello world",
                           "def hello_world():\n    print(Hello, world!)")
 
-class SnippyGui(ttk.Frame):
+class SnippyGui(ttk.Frame): # pylint: disable=too-many-ancestors,too-many-instance-attributes
     """The main snippy GUI.
 
     :param parent: Parent widget
@@ -75,27 +77,34 @@ class SnippyGui(ttk.Frame):
         return self._db.get_all_snippets()
 
     def get_snippet_by_rowid(self, rowid: int):
+        """Returns the snippet with the given row ID."""
         return self._db.query_by_rowid(rowid)
 
     def insert_snippet(self, snippet: Snippet):
+        """Inserts a snippet."""
         self._db.insert_snippet(snippet)
         self._update_databox()
 
     def update_snippet(self, rowid: int, snippet: Snippet):
+        """Updates a snippet."""
         self._db.update_snippet(rowid, snippet)
 
     def delete_snippet(self, rowid: int):
+        """Deletes a snippet."""
         self._db.delete_snippet(rowid)
         self._update_databox()
 
     #==== Notebook operations
     def add_tab(self, tab_label: str, tab_content: tk.Widget, **kw):
+        """Adds a tab to the notebook."""
         self._notebook.add_tab(tab_label, tab_content, **kw)
 
     def select_tab(self, tab_id: int):
+        """Selects a tab on the notebook."""
         self._notebook.select(tab_id)
 
     def close_selected_tab(self):
+        """Closes the selected tab on the notebook."""
         self._notebook.close_selected_tab()
 
     def _make_welcome_tab(self):
@@ -109,14 +118,14 @@ class SnippyGui(ttk.Frame):
 
 class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
     """A wrapper around ttk.Treeview for displaying data.
-    
+
     :param gui: Snippy GUI instance
     :type gui: snippy.presentation.gui.SnippyGui
     :param table_definition: Table definition
     :type table_definition: snippy.data.tabledefinitions.TableDefinition
     """
     def __init__(self, gui: SnippyGui,
-                 table_definition: TableDefinition = TABLE_STANDARD):
+                 table_definition: TableDefinition=TABLE_STANDARD):
         ttk.Frame.__init__(self, gui)
         self._logger = get_logger(MODULE_NAME)
 
@@ -138,7 +147,7 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
 
     def insert_row(self, iid: int, values: Iterable):
         """Inserts a row into the tree.
-        
+
         :param iid: Row ID
         :type iid: int
         :param values: Row values
@@ -146,20 +155,20 @@ class DataBox(ttk.Frame): # pylint: disable=too-many-ancestors
         """
         try:
             self.tree.insert("", tk.END, iid=iid, text=iid, values=values)
-        except tk.TclError as e:
-            self._logger.error(e.__doc__)
+        except tk.TclError as exc:
+            self._logger.error(exc.__doc__)
 
     def clear_all_rows(self):
         """Deletes all rows in the tree."""
         self.tree.delete(*self.tree.get_children())
 
 class MyNotebook(ttk.Frame): # pylint: disable=too-many-ancestors
-    """A small wrapper around ttk.Notebook with a context menu."""
+    """A small wrapper around ttk.Notebook with a context menu.
+
+    :param parent: The parent widget
+    :type parent: tkinter.Widget
+    """
     def __init__(self, parent: tk.Widget, **kw):
-        """
-        :param parent: The parent widget
-        :type parent: tkinter.Widget
-        """
         ttk.Frame.__init__(self, parent)
         self._notebook = ttk.Notebook(self, **kw)
         self._notebook.pack(fill=tk.BOTH, expand=True)
@@ -282,7 +291,7 @@ class FormMaker(object):
 
 class MenuMaker(object):
     """Creates the menubar and context menus.
-    
+
     :param gui: Snippy GUI instance
     :type gui: snippy.presentation.gui.SnippyGui
     """

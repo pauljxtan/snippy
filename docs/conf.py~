@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # snippy documentation build configuration file, created by
-# sphinx-quickstart on Tue Jun 28 21:47:23 2016.
+# sphinx-quickstart on Sat Jul  2 15:02:17 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.

@@ -33,7 +33,6 @@
     <Compile Include="snippy\logic\tablecontroller.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\obsolete\snippydb1.py" />
     <Compile Include="snippy\data\sqlite.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,19 +54,7 @@
     <Compile Include="snippy\testing2.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\utils\errors.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="snippy\obsolete\logformats.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="snippy\obsolete\logging1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="snippy\data\sqlgenerator.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="snippy\testing.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\utils\loggingtools.py">
@@ -85,7 +72,6 @@
     <Folder Include="snippy\" />
     <Folder Include="snippy\data\" />
     <Folder Include="snippy\logic\" />
-    <Folder Include="snippy\obsolete\" />
     <Folder Include="snippy\presentation\" />
     <Folder Include="snippy\utils\" />
   </ItemGroup>

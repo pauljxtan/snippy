@@ -1,10 +1,7 @@
-import datetime
-import enum
+"""Snippy types."""
+from datetime import datetime
 
-class Language(enum.Enum):
-    Python = 0
-
-class Snippet:
+class Snippet: # pylint: disable=too-few-public-methods
     """Represents a code snippet.
 
     :param creation_date: Creation date
@@ -18,7 +15,8 @@ class Snippet:
     :param code: Code
     :type code: str
     """
-    def __init__(self, creation_date: datetime.datetime, snippet_type: str,
+    # pylint: disable=too-many-arguments
+    def __init__(self, creation_date: datetime, snippet_type: str,
                  language: str, title: str, code: str):
         self.cdate = creation_date
         self.stype = snippet_type

@@ -1,3 +1,5 @@
+"""Sqlite data access."""
+
 import datetime
 import logging
 import sqlite3
@@ -32,6 +34,7 @@ def sqlite_to_python_type(sqlite_dtype: str):
     return SQLITE_TO_PYTHON_TYPE[sqlite_dtype]
 
 class Sqlite:
+    """Sqlite database access."""
     @classmethod
     def get_db_connection(cls, db_name: str):
         """
@@ -43,7 +46,7 @@ class Sqlite:
         logger = get_logger('sqlite', logging.DEBUG)
         conn = sqlite3.connect(db_name)
         conn.row_factory = sqlite3.Row
-        logger.info("Obtained connection to DB {0}".format(db_name))
+        logger.info("Obtained connection to DB %s", db_name)
         return conn
 
     @classmethod
@@ -68,11 +71,11 @@ class Sqlite:
         query_results = None
         try:
             query_results = cursor.fetchall()
-        except: # TODO: use correct exception
+        except sqlite3.Error:
             # Not a query
             pass
 
-        logger.debug("Execute: {0}, {1}".format(sql, args))
+        logger.debug("Execute: %s, %s", sql, args)
         db_conn.commit()
         cursor.close()
 

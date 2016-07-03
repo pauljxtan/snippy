@@ -1,8 +1,8 @@
-"""
-Database types.
-"""
+"""Database types."""
 
-class Column:
+from typing import Iterable
+
+class Column: # pylint: disable=too-few-public-methods
     """Represents a column in the schema of a database table.
 
     :param name: Column name
@@ -21,9 +21,9 @@ class Schema:
     """Represents the schema of a database table.
 
     :param columns: Columns in schema
-    :type columns: list(snippy.data.dbtypes.Column)
+    :type columns: iterable(snippy.data.dbtypes.Column)
     """
-    def __init__(self, columns: list):
+    def __init__(self, columns: Iterable[Column]):
         self.columns = columns
 
     def __eq__(self, other):
@@ -31,12 +31,14 @@ class Schema:
                 self.get_column_dtypes() == other.get_column_dtypes())
 
     def get_column_names(self):
+        """Returns the column names."""
         return [column.name for column in self.columns]
 
     def get_column_dtypes(self):
+        """Returns the column datatypes."""
         return [column.dtype for column in self.columns]
 
-class Table:
+class Table: # pylint: disable=too-few-public-methods
     """Represents a database table.
 
     :param name: Table name

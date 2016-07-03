@@ -22,13 +22,13 @@ class SqlGenerator:
         sql = ("CREATE TABLE IF NOT EXISTS {0} {1};"
                .format(self._table.name,
                        self._get_format_schema_sql(self._table.schema)))
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_drop_table_sql(self):
         """Returns the SQL for dropping the table."""
         sql = "DROP TABLE {0};".format(self._table.name)
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_insert_row_sql(self):
@@ -38,7 +38,7 @@ class SqlGenerator:
         cols_param_str = ", ".join([":{0}".format(col) for col in cols])
         sql = ("INSERT INTO {0} ({1}) values ({2});"
                .format(self._table.name, cols_str, cols_param_str))
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_update_row_sql(self):
@@ -47,19 +47,19 @@ class SqlGenerator:
         sql = ("UPDATE {0} SET ".format(self._table.name))
         sql += ", ".join(["{0} = :{0}".format(col) for col in cols])
         sql += "WHERE rowid = :rowid"
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_delete_row_sql(self):
         """Returns the SQL for deleting a row in the table."""
         sql = "DELETE FROM {0} WHERE rowid = :rowid".format(self._table.name)
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_query_all_rows_sql(self):
         """Returns the SQL for querying all rows in the table."""
         sql = "SELECT *, ROWID FROM {0};".format(self._table.name)
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def get_query_row_by_value_sql(self, column_name: str, value):
@@ -73,12 +73,12 @@ class SqlGenerator:
         if column_name not in self._table.schema.get_column_names():
             raise ValueError("Column name is not in table schema")
         sql = "SELECT *, ROWID FROM {0} WHERE {1} = ".format(self._table.name,
-                                                      column_name)
+                                                             column_name)
         if isinstance(value, str):
             sql += "'{0}'".format(value)
         else:
             sql += "{0}".format(value)
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql
 
     def _get_format_schema_sql(self, schema: Schema):
@@ -89,5 +89,5 @@ class SqlGenerator:
         sql += ("{0} {1})"
                 .format(schema.columns[-1].name,
                         python_to_sqlite_type(schema.columns[-1].dtype)))
-        self._logger.debug("SQL: {0}".format(sql))
+        self._logger.debug("SQL: %s", sql)
         return sql

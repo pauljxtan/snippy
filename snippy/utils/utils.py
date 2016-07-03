@@ -1,6 +1,5 @@
-"""
-Utility functions.
-"""
+"""Utility functions."""
+from snippy.data.snippytypes import Snippet
 
 def center(win):
     """
@@ -14,9 +13,19 @@ def center(win):
     center_y = (win.winfo_screenheight() // 2) - (height // 2)
     win.geometry('{}x{}+{}+{}'.format(width, height, center_x, center_y))
 
-def is_list_of(obj: object, dtype: type):
-    return ((isinstance(obj, list) or isinstance(obj, tuple))
-            and all([isinstance(elem, dtype) for elem in obj]))
+def get_row_from_snippet(snippet: Snippet):
+    """Converts a Snippet instance to a row dict."""
+    return {'creation_date': snippet.cdate,
+            'snippet_type': snippet.stype,
+            'language': snippet.lang,
+            'title': snippet.title,
+            'code': snippet.code}
 
-def is_list_or_tuple(obj: object):
-    return isinstance(obj, list) or isinstance(obj, tuple)
+def get_snippet_from_row(row: dict):
+    """Converts a row dict to a Snippet instance."""
+    return Snippet(row['creation_date'], row['snippet_type'],
+                   row['language'], row['title'], row['code'])
+
+def get_snippets_from_rows(rows: list):
+    """Converts a list of row dicts to a list of Snippet instances."""
+    return [get_snippet_from_row(row) for row in rows]

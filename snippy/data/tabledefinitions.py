@@ -1,3 +1,5 @@
+"""Database table definitions."""
+
 import datetime
 from snippy.data.dbtypes import Column, Schema, Table
 
@@ -57,7 +59,7 @@ class TableDefinition:
         in more human-readable format.
         """
         return [name.replace("_", " ").title()
-               for name in self.col_names_display]
+                for name in self.col_names_display]
 
 _TABLE_STANDARD_COLS = (
     Column('creation_date', datetime.datetime),

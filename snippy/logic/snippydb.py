@@ -1,8 +1,11 @@
+"""The Snippy database."""
+
 import datetime
 from snippy.data.snippytypes import Snippet
 from snippy.data.sqlite import Sqlite
 from snippy.data.tabledefinitions import TABLE_STANDARD
 from snippy.logic.tablecontroller import TableController
+from snippy.utils.utils import get_row_from_snippet, get_snippets_from_rows
 
 EXAMPLE_SNIPPET = {
     'creation_date': datetime.datetime.now(),
@@ -39,7 +42,7 @@ class SnippyDb:
     def get_all_snippets(self):
         """Returns all snippets in the database."""
         rows = self._table_ctlr.query_all_rows()
-        return self._get_snippets_from_rows(rows), [row['rowid'] for row in rows]
+        return get_snippets_from_rows(rows), [row['rowid'] for row in rows]
 
     def get_snippets_by_creation_date(self, creation_date: datetime.datetime):
         """Returns all snippets with the given creation date.
@@ -49,7 +52,7 @@ class SnippyDb:
         """
         rows = self._table_ctlr.query_row_by_value('creation_date',
                                                    creation_date)
-        return self._get_snippets_from_rows(rows)
+        return get_snippets_from_rows(rows)
 
     def get_snippets_by_snippet_type(self, snippet_type: str):
         """Returns all snippets of the given type.
@@ -59,7 +62,7 @@ class SnippyDb:
         """
         rows = self._table_ctlr.query_row_by_value('snippet_type',
                                                    snippet_type)
-        return self._get_snippets_from_rows(rows)
+        return get_snippets_from_rows(rows)
 
     def get_snippets_by_language(self, language: str):
         """Returns all snippets in the given programming language.
@@ -68,7 +71,7 @@ class SnippyDb:
         :type language: str
         """
         rows = self._table_ctlr.query_row_by_value('language', language)
-        return self._get_snippets_from_rows(rows)
+        return get_snippets_from_rows(rows)
 
 
     def get_snippets_by_title(self, title: str):
@@ -78,7 +81,7 @@ class SnippyDb:
         :type title: str
         """
         rows = self._table_ctlr.query_row_by_value('title', title)
-        return self._get_snippets_from_rows(rows)
+        return get_snippets_from_rows(rows)
 
     def get_snippets_by_rowid(self, rowid: int):
         """Returns all snippets with the given row ID.
@@ -87,7 +90,7 @@ class SnippyDb:
         :type rowid: int
         """
         rows = self._table_ctlr.query_row_by_value('rowid', rowid)
-        return self._get_snippets_from_rows(rows)
+        return get_snippets_from_rows(rows)
 
     def insert_snippet(self, snippet: Snippet):
         """Inserts a snippet into the database.
@@ -95,7 +98,7 @@ class SnippyDb:
         :param snippet: Snippet
         :type snippet: snippy.data.snippytypes.Snippet
         """
-        self._table_ctlr.insert_row(self._get_row_from_snippet(snippet))
+        self._table_ctlr.insert_row(get_row_from_snippet(snippet))
 
     def update_snippet(self, rowid: int, snippet: Snippet):
         """Updates a snippet in the database.
@@ -105,7 +108,7 @@ class SnippyDb:
         :param snippet: Snippet
         :type snippet: snippy.data.snippytypes.Snippet
         """
-        self._table_ctlr.update_row(rowid, self._get_row_from_snippet(snippet))
+        self._table_ctlr.update_row(rowid, get_row_from_snippet(snippet))
 
     def delete_snippet(self, rowid: int):
         """Deletes a snippet from the database.
@@ -114,17 +117,3 @@ class SnippyDb:
         :type rowid: int
         """
         self._table_ctlr.delete_row(rowid)
-
-    def _get_row_from_snippet(self, snippet: Snippet):
-        return {'creation_date': snippet.cdate,
-                'snippet_type': snippet.stype,
-                'language': snippet.lang,
-                'title': snippet.title,
-                'code': snippet.code}
-
-    def _get_snippet_from_row(self, row: dict):
-        return Snippet(row['creation_date'], row['snippet_type'],
-                       row['language'], row['title'], row['code'])
-
-    def _get_snippets_from_rows(self, rows: list):
-        return [self._get_snippet_from_row(row) for row in rows]
