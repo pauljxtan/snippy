@@ -22,14 +22,6 @@ snippy.testing module
     :undoc-members:
     :show-inheritance:
 
-snippy.testing2 module
-----------------------
-
-.. automodule:: snippy.testing2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

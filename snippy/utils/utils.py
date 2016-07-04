@@ -1,6 +1,7 @@
 """
 Utility functions.
 """
+from typing import Iterable
 from snippy.data.snippytypes import Snippet
 
 
@@ -32,6 +33,6 @@ def get_snippet_from_row(row: dict):
                    row['language'], row['title'], row['code'])
 
 
-def get_snippets_from_rows(rows: list):
+def get_snippets_from_rows(rows: Iterable[dict]):
     """Converts a list of row dicts to a list of Snippet instances."""
     return [get_snippet_from_row(row) for row in rows]

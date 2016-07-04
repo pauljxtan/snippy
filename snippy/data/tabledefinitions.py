@@ -1,19 +1,20 @@
 """
 Database table definitions.
 """
-import datetime
+from datetime import datetime
+from typing import Iterable
 from snippy.data.dbtypes import Column, Schema, Table
 
 
 class TableDefinition:
     """Encapsulates various properties of a database table."""
-    def __init__(self, name: str, columns: list, databox_indices=None):
+    def __init__(self, name: str, columns: Iterable[Column], databox_indices=None):
         """Initializes the table definition.
 
         :param name: Table name
         :type name: str
         :param columns: Table columns
-        :type columns: list(Column)
+        :type columns: iterable(Column)
         :param databox_indices: Indices of columns to display in databox
         :type databox_indices = list(int)
         """
@@ -64,7 +65,7 @@ class TableDefinition:
                 for name in self.col_names_display]
 
 _TABLE_STANDARD_COLS = (
-    Column('creation_date', datetime.datetime),
+    Column('creation_date', datetime),
     Column('snippet_type', str),
     Column('language', str),
     Column('title', str),

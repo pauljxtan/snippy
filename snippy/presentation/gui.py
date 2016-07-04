@@ -1,11 +1,10 @@
 """
 The Snippy GUI.
 """
-from collections.abc import Iterable
-import datetime
+from datetime import datetime
 import tkinter as tk
-from tkinter import messagebox
-from tkinter import ttk
+from typing import Iterable
+from tkinter import messagebox, ttk
 from snippy.data.snippytypes import Snippet
 from snippy.data.tabledefinitions import TABLE_STANDARD, TableDefinition
 from snippy.logic.snippydb import SnippyDb
@@ -16,7 +15,7 @@ MODULE_NAME = "widgets"
 WELCOME_MESSAGE = ("Welcome to Snippy!\n"
                    "To get started, click on 'Create snippet' on the top menu,"
                    " or right-click on any snippet above.")
-EXAMPLE_SNIPPET = Snippet(datetime.datetime(2001, 1, 1), "Function", "Python",
+EXAMPLE_SNIPPET = Snippet(datetime(2001, 1, 1), "Function", "Python",
                           "Simple hello world",
                           "def hello_world():\n    print(Hello, world!)")
 
@@ -245,7 +244,7 @@ class FormMaker(object):
         text_code.grid(row=4, column=1)
 
         def _create_snippet():
-            snippet = Snippet(datetime.datetime.now(), entry_type.get(),
+            snippet = Snippet(datetime.now(), entry_type.get(),
                               entry_lang.get(), entry_title.get(),
                               text_code.get("1.0", tk.END))
             self.gui.insert_snippet(snippet)

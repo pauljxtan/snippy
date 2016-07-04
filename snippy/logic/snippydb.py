@@ -1,7 +1,7 @@
 """
 The Snippy database.
 """
-import datetime
+from datetime import datetime
 from snippy.data.snippytypes import Snippet
 from snippy.data.sqlite import Sqlite
 from snippy.data.tabledefinitions import TABLE_STANDARD
@@ -9,7 +9,7 @@ from snippy.logic.tablecontroller import TableController
 from snippy.utils.utils import get_row_from_snippet, get_snippets_from_rows
 
 EXAMPLE_SNIPPET = {
-    'creation_date': datetime.datetime.now(),
+    'creation_date': datetime.now(),
     'snippet_type':  "Function",
     'language':  "Python",
     'title': "Prints hello world",
@@ -46,11 +46,11 @@ class SnippyDb:
         rows = self._table_ctlr.query_all_rows()
         return get_snippets_from_rows(rows), [row['rowid'] for row in rows]
 
-    def get_snippets_by_creation_date(self, creation_date: datetime.datetime):
+    def get_snippets_by_creation_date(self, creation_date: datetime):
         """Returns all snippets with the given creation date.
 
         :param creation_date: Snippet creation date
-        :type creation_date: datetime.datetime
+        :type creation_date: datetime
         """
         rows = self._table_ctlr.query_row_by_value('creation_date',
                                                    creation_date)

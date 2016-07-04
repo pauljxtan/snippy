@@ -4,14 +4,6 @@ snippy.utils package
 Submodules
 ----------
 
-snippy.utils.errors module
---------------------------
-
-.. automodule:: snippy.utils.errors
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 snippy.utils.loggingtools module
 --------------------------------
 
