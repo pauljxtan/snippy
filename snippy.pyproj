@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7c72219a-59d5-446b-bce3-b056086b773f}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>snippy\testing.py</StartupFile>
+    <StartupFile>snippy\main.py</StartupFile>
     <SearchPath>.</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -51,7 +51,7 @@
     <Compile Include="snippy\presentation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="snippy\testing.py">
+    <Compile Include="snippy\main.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="snippy\data\sqlgenerator.py">

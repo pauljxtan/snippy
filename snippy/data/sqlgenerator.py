@@ -57,6 +57,12 @@ class SqlGenerator:
         self._logger.debug("SQL: %s", sql)
         return sql
 
+    def get_delete_all_rows_sql(self):
+        """Returns the SQL for deleting all rows in the table."""
+        sql = "DELETE FROM {0}".format(self._table.name)
+        self._logger.debug("SQL: %s", sql)
+        return sql
+
     def get_query_all_rows_sql(self):
         """Returns the SQL for querying all rows in the table."""
         sql = "SELECT *, ROWID FROM {0};".format(self._table.name)

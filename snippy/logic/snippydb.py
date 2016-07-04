@@ -8,14 +8,6 @@ from snippy.data.tabledefinitions import TABLE_STANDARD
 from snippy.logic.tablecontroller import TableController
 from snippy.utils.utils import get_row_from_snippet, get_snippets_from_rows
 
-EXAMPLE_SNIPPET = {
-    'creation_date': datetime.now(),
-    'snippet_type':  "Function",
-    'language':  "Python",
-    'title': "Prints hello world",
-    'code':  "def hello_world():\n    print \"Hello, world!\""
-}
-
 
 class SnippyDb:
     """Encapsulates a snippy database.
@@ -25,18 +17,16 @@ class SnippyDb:
     :param verbose: Verbose flag
     :type verbose: bool
     """
-    def __init__(self, db_name: str, verbose=False):
+    def __init__(self, db_name: str, clobber: bool=False, verbose: bool=False):
         self._db_name = db_name
         self._db_conn = Sqlite.get_db_connection(db_name)
         self._table = TABLE_STANDARD.table
         self._table_ctlr = TableController(self._db_conn, self._table)
         self.verbose = verbose
 
-        self._table_ctlr.create_table()
+        self._table_ctlr.create_table(clobber)
         if verbose:
             print("Created table {0}".format(self._table.name))
-
-        self._table_ctlr.insert_row(EXAMPLE_SNIPPET)
 
     def __del__(self):
         self._db_conn.close()
@@ -118,3 +108,7 @@ class SnippyDb:
         :type rowid: int
         """
         self._table_ctlr.delete_row(rowid)
+
+    def delete_all_snippets(self):
+        """Deletes all snippets from the database."""
+        self._table_ctlr.delete_all_rows()

@@ -72,6 +72,12 @@ class TableController:
         Sqlite.execute_sql(self._db_conn, sql, {'rowid': rowid})
         self._logger.info("Deleted row %s", rowid)
 
+    def delete_all_rows(self):
+        """Deletes all rows."""
+        sql = self._sql_gen.get_delete_all_rows_sql()
+        Sqlite.execute_sql(self._db_conn, sql)
+        self._logger.info("Deleted all rows")
+
     def query_all_rows(self):
         """Returns all rows."""
         sql = self._sql_gen.get_query_all_rows_sql()

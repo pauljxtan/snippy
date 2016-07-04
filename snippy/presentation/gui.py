@@ -11,27 +11,27 @@ from snippy.logic.snippydb import SnippyDb
 from snippy.utils.loggingtools import get_logger
 
 MODULE_NAME = "widgets"
-
 WELCOME_MESSAGE = ("Welcome to Snippy!\n"
                    "To get started, click on 'Create snippet' on the top menu,"
                    " or right-click on any snippet above.")
 EXAMPLE_SNIPPET = Snippet(datetime(2001, 1, 1), "Function", "Python",
                           "Simple hello world",
                           "def hello_world():\n    print(Hello, world!)")
-
+DEFAULT_DB_FILENAME = "snippy.db"
 
 class SnippyGui(ttk.Frame):
     """The main snippy GUI.
 
     :param parent: Parent widget
     :type parent: Tkinter.Widget
-    :param db: Database/table controller
-    :type db: snippy.logic.tablecontroller.TableController
+    :param db_name: Database name
+    :type db: str
     """
-    def __init__(self, parent: tk.Widget, db: SnippyDb, verbose=False):
+    def __init__(self, parent: tk.Widget, db_name: str=DEFAULT_DB_FILENAME,
+                 clobber: bool=False, verbose: bool=False):
         ttk.Frame.__init__(self)
         self.parent = parent
-        self._db = db
+        self._db = SnippyDb(db_name, clobber, verbose)
         self._verbose = verbose
 
         self._databox = DataBox(self)
@@ -93,6 +93,11 @@ class SnippyGui(ttk.Frame):
     def delete_snippet(self, rowid: int):
         """Deletes a snippet."""
         self._db.delete_snippet(rowid)
+        self._update_databox()
+
+    def delete_all_snippets(self):
+        """Deletes all snippets."""
+        self._db.delete_all_snippets()
         self._update_databox()
 
     # ==== Notebook operations
