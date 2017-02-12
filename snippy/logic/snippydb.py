@@ -29,7 +29,11 @@ class SnippyDb:
             print("Created table {0}".format(self._table.name))
 
     def __del__(self):
-        self._db_conn.close()
+        try:
+            self._db_conn.close()
+        except:
+            # No connection open
+            pass
 
     def get_all_snippets(self):
         """Returns all snippets in the database."""

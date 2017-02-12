@@ -6,12 +6,13 @@ import glob
 import logging
 import os
 from typing import Generic, Iterable
+from snippy.settings import BASE_DIR
 
 LOG_FORMAT_STANDARD = ("%(asctime)s %(levelname)s: "
                        "[%(filename)s:%(lineno)s, %(funcName)s()] "
                        "%(message)s")
 TIME_FORMAT_STANDARD = "%Y-%m-%d %H:%M:%S"
-LOG_DIR = os.path.join("snippy", "logs")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
 
 
 def get_logger(name, level: int=logging.INFO, filename: str=None,
@@ -40,6 +41,8 @@ def get_logger(name, level: int=logging.INFO, filename: str=None,
     logger = logging.getLogger(name)
     logger.setLevel(level)
     filepath = os.path.join(LOG_DIR, filename)
+    if not os.path.exists(LOG_DIR):
+        os.mkdir(LOG_DIR)
     file_handler = logging.FileHandler(filepath)
     file_handler.setLevel(level)
     formatter = logging.Formatter(message_format, time_format)

@@ -28,7 +28,7 @@ class SqlGenerator:
 
     def get_drop_table_sql(self):
         """Returns the SQL for dropping the table."""
-        sql = "DROP TABLE {0};".format(self._table.name)
+        sql = "DROP TABLE IF EXISTS {0};".format(self._table.name)
         self._logger.debug("SQL: %s", sql)
         return sql
 
