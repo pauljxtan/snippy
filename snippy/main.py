@@ -5,11 +5,13 @@ import tkinter as tk
 from snippy.presentation.gui import SnippyGui
 
 ROOT_TITLE = "Snippy"
+ROOT_GEOMETRY = "1280x640"
 
 
 def main():
     root = tk.Tk()
     root.title = ROOT_TITLE
+    root.geometry(ROOT_GEOMETRY)
     snippy_gui = SnippyGui(root, clobber=True)
     snippy_gui.pack(fill=tk.BOTH, expand=True)
     root.mainloop()

@@ -19,6 +19,7 @@ EXAMPLE_SNIPPET = Snippet(datetime(2001, 1, 1), "Function", "Python",
                           "def hello_world():\n    print(Hello, world!)")
 DEFAULT_DB_FILENAME = "snippy.db"
 
+
 class SnippyGui(ttk.Frame):
     """The main snippy GUI.
 
@@ -34,12 +35,18 @@ class SnippyGui(ttk.Frame):
         self._db = SnippyDb(db_name, clobber, verbose)
         self._verbose = verbose
 
+        self._search_box = tk.Entry(self)
+        self._search_box.pack(fill=tk.BOTH, expand=tk.TRUE)
+        #self._search_box.grid(row=0, column=0, sticky=tk.N+tk.S+tk.E+tk.W)
+
         self._databox = DataBox(self)
         self._databox.pack(fill=tk.BOTH, expand=True)
+        #self._databox.grid(row=1, column=0, sticky=tk.N+tk.S+tk.E+tk.W)
         self._update_databox()
 
         self._notebook = MyNotebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
+        #self._notebook.grid(row=2, column=0, sticky=tk.N+tk.S+tk.E+tk.W)
         self._make_welcome_tab()
 
         self._menu_maker = MenuMaker(self)
@@ -80,6 +87,18 @@ class SnippyGui(ttk.Frame):
     def get_snippet_by_rowid(self, rowid: int):
         """Returns the snippet with the given row ID."""
         return self._db.query_by_rowid(rowid)
+
+    def get_snippets_by_creation_date(self, creation_date: datetime):
+        return self._db.get_snippets_by_creation_date(creation_date)
+
+    def get_snippets_by_snippet_type(self, snippet_type: str):
+        return self._db.get_snippets_by_snippet_type(snippet_type)
+
+    def get_snippets_by_language(self, language: str):
+        return self._db.get_snippets_by_language(language)
+
+    def get_snippets_by_title(self, title: str):
+        return self._db.get_snippets_by_title(title)
 
     def insert_snippet(self, snippet: Snippet):
         """Inserts a snippet."""
@@ -255,8 +274,9 @@ class FormMaker(object):
             self.gui.insert_snippet(snippet)
             self.gui.close_selected_tab()
 
-        ttk.Button(form, text="Create", command=_create_snippet).grid(
-            row=5, columnspan=2)
+        button = ttk.Button(form, text="Create", command=_create_snippet)
+        button.bind('<Return>', _create_snippet)
+        button.grid(row=5, columnspan=2)
 
         return form
 
